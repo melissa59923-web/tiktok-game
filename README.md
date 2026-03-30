@@ -6,8 +6,7 @@
 
 ## 🎮 Play Now
 
-**[👉 Play the Game](https://your-username.github.io/tiktok-tycoon/game.html)** *(replace with your actual link)*
-
+**[👉 Play the Game](https://github.com/melissa59923-web/tiktok-game))
 ## ✨ What Makes It Fun
 
 - **Real Business Decisions**: Pick from beauty, fashion, electronics, or food. Each choice matters.
@@ -53,7 +52,8 @@ python3 -m http.server 8000
 
 ## 🎨 Screenshots
 
-*(Add screenshots here after deploying)*
+<img width="2560" height="2544" alt="image" src="https://github.com/user-attachments/assets/ec97df95-b9ea-40d3-960e-4b1682b89520" />
+
 
 ## 🤝 Contributing
 

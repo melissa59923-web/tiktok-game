@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>爆款缔造者：TikTok带货大亨</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'neon-cyan': '#25F4EE',
+        'neon-red': '#FE2C55',
+        'dark-bg': '#0A0A0A',
+        'dark-card': '#141414',
+        'dark-border': '#2A2A2A',
+        'dark-surface': '#1A1A1A',
+      },
+      fontFamily: {
+        sans: ['Noto Sans SC', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans SC', sans-serif; background: #0A0A0A; color: #E0E0E0; overflow-x: hidden; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0A0A0A; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+  /* Glow effects */
+  .glow-cyan { text-shadow: 0 0 10px #25F4EE, 0 0 40px rgba(37,244,238,0.3); }
+  .glow-red { text-shadow: 0 0 10px #FE2C55, 0 0 40px rgba(254,44,85,0.3); }
+  .glow-green { text-shadow: 0 0 10px #00FF88, 0 0 40px rgba(0,255,136,0.3); }
+
+  .box-glow-cyan { box-shadow: 0 0 20px rgba(37,244,238,0.15), inset 0 0 20px rgba(37,244,238,0.05); }
+  .box-glow-red { box-shadow: 0 0 20px rgba(254,44,85,0.15), inset 0 0 20px rgba(254,44,85,0.05); }
+
+  /* Card selection */
+  .card-selectable {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 2px solid #2A2A2A;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-selectable::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(37,244,238,0.03) 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card-selectable:hover {
+    border-color: #444;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .card-selectable:hover::before { opacity: 1; }
+  .card-selectable.selected {
+    border-color: #25F4EE;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 0 25px rgba(37,244,238,0.2), 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .card-selectable.selected::before { opacity: 1; }
+
+  /* Slider */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #25F4EE 0%, #FE2C55 100%);
+    border-radius: 3px;
+    outline: none;
+    position: relative;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(37,244,238,0.5), 0 2px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 20px rgba(37,244,238,0.8), 0 2px 12px rgba(0,0,0,0.4);
+  }
+
+  /* Modal */
+  .modal-overlay {
+    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.7);
+  }
+  .modal-content {
+    animation: modalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.85) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* Pulse animation */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(37,244,238,0.2); }
+    50% { box-shadow: 0 0 40px rgba(37,244,238,0.4), 0 0 60px rgba(37,244,238,0.1); }
+  }
+  .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+  /* Number rolling */
+  @keyframes countUp {
+    from { opacity: 0.5; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .number-roll { animation: countUp 0.1s ease-out; }
+
+  /* 报表情绪化样式 */
+  .report-mega-win {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    animation: pulse 0.6s ease-out;
+  }
+  .report-win {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+  }
+  .report-meh {
+    background: linear-gradient(135deg, #434343 0%, #000000 100%) !important;
+  }
+  .report-loss {
+    background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%) !important;
+  }
+  .report-disaster {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%) !important;
+    animation: shake-hard 0.5s;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes shake-hard {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+    20%, 40%, 60%, 80% { transform: translateX(8px); }
+  }
+
+  /* Big button */
+  .launch-btn {
+    background: linear-gradient(135deg, #FE2C55 0%, #25F4EE 100%);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .launch-btn::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: #141414;
+    border-radius: inherit;
+    z-index: 0;
+    transition: opacity 0.3s;
+  }
+  .launch-btn:hover::before { opacity: 0.85; }
+  .launch-btn span { position: relative; z-index: 1; }
+
+  /* Report line animation */
+  .report-line {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  .report-line.show {
+    animation: slideIn 0.4s forwards;
+  }
+  @keyframes slideIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Event banner */
+  @keyframes flashBanner {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  .event-flash { animation: flashBanner 0.5s ease-in-out 3; }
+
+  /* Scanline effect */
+  .scanline::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(37,244,238,0.1), transparent);
+    animation: scan 3s linear infinite;
+  }
+  @keyframes scan {
+    from { top: 0; }
+    to { top: 100%; }
+  }
+
+  /* Section label */
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #666;
+    border-left: 2px solid #25F4EE;
+    padding-left: 8px;
+    margin-bottom: 12px;
+  }
+
+  /* Game Over */
+  @keyframes shatter {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .gameover-text {
+    animation: shatter 0.6s ease-out;
+    text-shadow: 0 0 30px #FE2C55, 0 0 60px rgba(254,44,85,0.5);
+  }
+
+  /* Stat card mini glow */
+  .stat-card {
+    background: linear-gradient(135deg, #141414, #1A1A1A);
+    border: 1px solid #2A2A2A;
+    transition: border-color 0.3s;
+  }
+  .stat-card:hover { border-color: #333; }
+
+  /* Decorative grid bg */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(37,244,238,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,244,238,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+</style>
+</head>
+<body class="grid-bg min-h-screen">
+
+<!-- ==================== HEADER ==================== -->
+<header class="sticky top-0 z-40 bg-dark-bg/90 backdrop-blur-md border-b border-dark-border">
+  <div class="max-w-[1440px] mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-red flex items-center justify-center text-sm font-bold text-black">T</div>
+        <div>
+          <h1 class="text-sm font-bold tracking-wide">爆款缔造者</h1>
+          <p class="text-[10px] text-gray-500 tracking-widest">TIKTOK 带货大亨</p>
+        </div>
+      </div>
+      <div class="h-6 w-px bg-dark-border mx-2"></div>
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-gray-500">公司：</span>
+        <span id="companyName" class="text-sm font-medium text-neon-cyan cursor-pointer hover:underline" onclick="editCompanyName()">未来科技MCN</span>
+        <span id="companyTier" class="text-xs text-gray-400">· 车库工作室</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="text-right">
+        <div class="text-[10px] text-gray-500 tracking-wider">当前月份</div>
+        <div class="text-lg font-bold"><span class="text-neon-cyan">第</span> <span id="currentMonth">1</span> <span class="text-neon-cyan">月</span></div>
+      </div>
+      <button onclick="showHistory()" class="px-3 py-1.5 text-xs rounded-lg border border-dark-border hover:border-neon-cyan/50 transition-colors">
+        📊 历史记录
+      </button>
+      <button onclick="saveGame()" class="px-3 py-1.5 text-xs rounded-lg border border-dark-border hover:border-green-500/50 transition-colors">
+        💾 保存
+      </button>
+      <button onclick="loadGame()" class="px-3 py-1.5 text-xs rounded-lg border border-dark-border hover:border-blue-500/50 transition-colors">
+        📂 加载
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== BALANCE BAR ==================== -->
+<div class="max-w-[1440px] mx-auto px-6 mt-4">
+  <div class="relative rounded-2xl bg-dark-card border border-dark-border p-5 pulse-glow scanline overflow-hidden">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="text-xs text-gray-500 tracking-wider mb-1">💰 公司账户余额</div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-4xl font-black text-white glow-cyan" id="balanceDisplay">¥1,000,000</span>
+          <span id="balanceChange" class="text-sm font-medium hidden"></span>
+        </div>
+      </div>
+      <div class="flex gap-8 text-right">
+        <div>
+          <div class="text-[10px] text-gray-500">累计营收</div>
+          <div class="text-lg font-bold text-green-400" id="totalRevenue">¥0</div>
+        </div>
+        <div>
+          <div class="text-[10px] text-gray-500">累计利润</div>
+          <div class="text-lg font-bold" id="totalProfit">¥0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MAIN LAYOUT ==================== -->
+<div class="max-w-[1440px] mx-auto px-6 mt-4 mb-8 flex gap-4">
+
+  <!-- LEFT: CONTROL PANEL -->
+  <div class="flex-1 min-w-0 space-y-4">
+
+    <!-- 选品类 -->
+    <section class="rounded-2xl bg-dark-card border border-dark-border p-5">
+      <div class="section-label">STEP 1 · 选择品类</div>
+      <div class="grid grid-cols-3 gap-3" id="categoryCards">
+        <!-- 女装 -->
+        <div class="card-selectable rounded-xl p-4 bg-dark-surface" data-category="fashion" onclick="selectCategory(this, 'fashion')">
+          <div class="text-2xl mb-2">👗</div>
+          <div class="font-bold text-sm mb-1">女装</div>
+          <div class="space-y-1 text-[11px] text-gray-400">
+            <div>客单价 <span class="text-white font-medium">¥100</span></div>
+            <div>毛利率 <span class="text-green-400">60%</span></div>
+            <div>退货率 <span class="text-red-400">50%</span></div>
+            <div>自然流量 <span class="text-neon-cyan">2万</span></div>
+          </div>
+          <div class="mt-2 text-[10px] text-gray-600">⚠️ 高退货 · 高利润</div>
+        </div>
+        <!-- 美妆 -->
+        <div class="card-selectable rounded-xl p-4 bg-dark-surface" data-category="beauty" onclick="selectCategory(this, 'beauty')">
+          <div class="text-2xl mb-2">💄</div>
+          <div class="font-bold text-sm mb-1">美妆</div>
+          <div class="space-y-1 text-[11px] text-gray-400">
+            <div>客单价 <span class="text-white font-medium">¥200</span></div>
+            <div>毛利率 <span class="text-green-400">70%~95% 可调</span></div>
+            <div>退货率 <span class="text-red-400">15%+</span></div>
+            <div>自然流量 <span class="text-neon-cyan">5千</span></div>
+          </div>
+          <div class="mt-2 text-[10px] text-gray-600">💎 高客单 · 毛利可控 · 风险并存</div>
+        </div>
+        <!-- 零食 -->
+        <div class="card-selectable rounded-xl p-4 bg-dark-surface" data-category="snack" onclick="selectCategory(this, 'snack')">
+          <div class="text-2xl mb-2">🍿</div>
+          <div class="font-bold text-sm mb-1">零食</div>
+          <div class="space-y-1 text-[11px] text-gray-400">
+            <div>客单价 <span class="text-white font-medium">¥30</span></div>
+            <div>毛利率 <span class="text-green-400">30%</span></div>
+            <div>退货率 <span class="text-red-400">5%</span></div>
+            <div>自然流量 <span class="text-neon-cyan">5万</span></div>
+          </div>
+          <div class="mt-2 text-[10px] text-gray-600">🔥 高流量 · 薄利</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 选主播 -->
+    <section class="rounded-2xl bg-dark-card border border-dark-border p-5">
+      <div class="section-label">STEP 2 · 签约主播</div>
+      <div class="grid grid-cols-3 gap-3" id="hostCards">
+        <!-- 大学生 -->
+        <div class="card-selectable rounded-xl p-4 bg-dark-surface" data-host="student" onclick="selectHost(this, 'student')">
+          <div class="text-2xl mb-2">🎓</div>
+          <div class="font-bold text-sm mb-1">大学生主播</div>
+          <div class="space-y-1 text-[11px] text-gray-400">
+            <div>底薪 <span class="text-yellow-400">¥5,000</span></div>
+            <div>转化率 <span class="text-white">1%</span></div>
+            <div>佣金 <span class="text-green-400">无</span></div>
+          </div>
+          <div class="mt-2 text-[10px] text-gray-600">🌱 成本最低 · 佛系带货</div>
+        </div>
+        <!-- 成熟主播 -->
+        <div class="card-selectable rounded-xl p-4 bg-dark-surface" data-host="pro" onclick="selectHost(this, 'pro')">
+          <div class="text-2xl mb-2">🎙️</div>
+          <div class="font-bold text-sm mb-1">成熟主播</div>
+          <div class="space-y-1 text-[11px] text-gray-400">
+            <div>底薪 <span class="text-yellow-400">¥30,000</span></div>
+            <div>转化率 <span class="text-white">3%</span></div>
+            <div>佣金 <span class="text-green-400">无</span></div>
+          </div>
+          <div class="mt-2 text-[10px] text-gray-600">⚡ 稳定输出 · 性价比高</div>
+        </div>
+        <!-- 头部大V -->
+        <div class="card-selectable rounded-xl p-4 bg-dark-surface" data-host="topv" onclick="selectHost(this, 'topv')">
+          <div class="text-2xl mb-2">👑</div>
+          <div class="font-bold text-sm mb-1">头部大V</div>
+          <div class="space-y-1 text-[11px] text-gray-400">
+            <div>底薪 <span class="text-yellow-400">¥100,000</span></div>
+            <div>转化率 <span class="text-white">8%</span></div>
+            <div>佣金 <span class="text-red-400">真实销售额的25%</span></div>
+          </div>
+          <div class="mt-2 text-[10px] text-gray-600">🔥 超强转化 · 超贵佣金</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 投流预算 -->
+    <section class="rounded-2xl bg-dark-card border border-dark-border p-5">
+      <div class="section-label">STEP 3 · 投流预算</div>
+      <div class="flex items-center gap-4 mb-3">
+        <span class="text-xs text-gray-500 w-8">¥0</span>
+        <input type="range" id="adBudgetSlider" min="0" max="500000" step="10000" value="0" oninput="updateAdBudget(this.value)" class="flex-1">
+        <span class="text-xs text-gray-500 w-12 text-right">¥50万</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-400">投放金额：</span>
+          <span class="text-xl font-bold text-white" id="adBudgetDisplay">¥0</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-400">预计买入流量：</span>
+          <span class="text-xl font-bold text-neon-cyan" id="adTrafficDisplay">0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 营销动作 -->
+    <section class="rounded-2xl bg-dark-card border border-dark-border p-5">
+      <div class="section-label">STEP 4 · 营销动作</div>
+      <div class="grid grid-cols-3 gap-3" id="marketingCards">
+        <!-- 无 -->
+        <div class="card-selectable rounded-xl p-4 bg-dark-surface selected" data-marketing="none" onclick="selectMarketing(this, 'none')">
+          <div class="text-2xl mb-2">😐</div>
+          <div class="font-bold text-sm mb-1">无营销</div>
+          <div class="space-y-1 text-[11px] text-gray-400">
+            <div>花费 <span class="text-green-400">¥0</span></div>
+            <div>额外流量 <span class="text-white">无</span></div>
+          </div>
+          <div class="mt-2 text-[10px] text-gray-600">💤 省钱但也没人看</div>
+        </div>
+        <!-- KOC -->
+        <div class="card-selectable rounded-xl p-4 bg-dark-surface" data-marketing="koc" onclick="selectMarketing(this, 'koc')">
+          <div class="text-2xl mb-2">📱</div>
+          <div class="font-bold text-sm mb-1">铺KOC短视频</div>
+          <div class="space-y-1 text-[11px] text-gray-400">
+            <div>花费 <span class="text-yellow-400">¥50,000</span></div>
+            <div>额外流量 <span class="text-neon-cyan">+5万</span></div>
+          </div>
+          <div class="mt-2 text-[10px] text-gray-600">📈 素人种草 · 稳定引流</div>
+        </div>
+        <!-- 明星 -->
+        <div class="card-selectable rounded-xl p-4 bg-dark-surface" data-marketing="celeb" onclick="selectMarketing(this, 'celeb')">
+          <div class="text-2xl mb-2">⭐</div>
+          <div class="font-bold text-sm mb-1">明星代言切片</div>
+          <div class="space-y-1 text-[11px] text-gray-400">
+            <div>花费 <span class="text-red-400">¥200,000</span></div>
+            <div>额外流量 <span class="text-neon-cyan">+10万</span></div>
+            <div>转化率 <span class="text-green-400">+1%</span></div>
+          </div>
+          <div class="mt-2 text-[10px] text-gray-600">🚀 重金一搏 · 转化翻倍</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 美妆毛利率调节（仅选美妆时显示） -->
+    <section id="marginSection" class="rounded-2xl bg-dark-card border border-dark-border p-5 hidden">
+      <div class="section-label">STEP 5 · 成本策略</div>
+      <div class="p-3 rounded-lg bg-dark-surface border border-dark-border mb-4">
+        <div class="text-xs text-gray-400 mb-2">💰 调整毛利率 — <span class="text-yellow-400">高毛利 = 高风险</span></div>
+        <div class="text-[11px] text-gray-600 leading-relaxed">
+          毛利越高意味着产品成本越低，但<span class="text-red-400">品质风险陡增</span>：退货率会上升，且有概率触发<span class="text-red-400">市场监管罚款</span>和<span class="text-red-400">转化率下降</span>。
+        </div>
+      </div>
+      <div class="flex items-center gap-4 mb-3">
+        <span class="text-xs text-gray-500 w-10">70%</span>
+        <input type="range" id="marginSlider" min="70" max="95" step="1" value="75" oninput="updateMargin(this.value)" class="flex-1">
+        <span class="text-xs text-gray-500 w-10 text-right">95%</span>
+      </div>
+      <div class="grid grid-cols-3 gap-3 text-center">
+        <div class="stat-card rounded-lg p-3">
+          <div class="text-[10px] text-gray-500">当前毛利率</div>
+          <div class="text-lg font-bold text-green-400" id="marginDisplay">75%</div>
+        </div>
+        <div class="stat-card rounded-lg p-3">
+          <div class="text-[10px] text-gray-500">预估退货率</div>
+          <div class="text-lg font-bold text-red-400" id="returnDisplay">15%</div>
+        </div>
+        <div class="stat-card rounded-lg p-3">
+          <div class="text-[10px] text-gray-500">风险等级</div>
+          <div class="text-lg font-bold" id="riskDisplay">🟢 低</div>
+        </div>
+      </div>
+      <div class="mt-3 p-2 rounded-lg bg-dark-surface/50 text-[10px] text-gray-600" id="riskDesc">
+        标准品质，退货率稳定，市场监管风险极低。
+      </div>
+    </section>
+
+    <!-- LAUNCH BUTTON -->
+    <button id="launchBtn" onclick="startLive()" class="launch-btn w-full rounded-2xl py-5 text-center cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-transform">
+      <span class="text-xl font-black tracking-wider">🚀 开始本月直播带货</span>
+    </button>
+  </div>
+
+  <!-- RIGHT: DATA DASHBOARD -->
+  <div class="w-[360px] flex-shrink-0 space-y-4">
+
+    <!-- 预计指标 -->
+    <section class="rounded-2xl bg-dark-card border border-dark-border p-5">
+      <div class="section-label">本月预估数据</div>
+      <div class="space-y-3">
+        <div class="stat-card rounded-lg p-3">
+          <div class="text-[10px] text-gray-500">预估总流量</div>
+          <div class="text-lg font-bold text-neon-cyan" id="estTraffic">-</div>
+        </div>
+        <div class="stat-card rounded-lg p-3">
+          <div class="text-[10px] text-gray-500">预估转化率</div>
+          <div class="text-lg font-bold text-white" id="estConversion">-</div>
+        </div>
+        <div class="stat-card rounded-lg p-3">
+          <div class="text-[10px] text-gray-500">预估 GMV</div>
+          <div class="text-lg font-bold text-yellow-400" id="estGMV">-</div>
+        </div>
+        <div class="stat-card rounded-lg p-3">
+          <div class="text-[10px] text-gray-500">本月总支出预算</div>
+          <div class="text-lg font-bold text-neon-red" id="estCost">-</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 上月报表 -->
+    <section class="rounded-2xl bg-dark-card border border-dark-border p-5">
+      <div class="section-label">上月财务简报</div>
+      <div id="lastMonthReport" class="text-sm text-gray-500">
+        <div class="text-center py-6">
+          <div class="text-2xl mb-2">📋</div>
+          <div class="text-xs">尚无数据，开始第一个月吧！</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 经营贴士 -->
+    <section class="rounded-2xl bg-dark-card border border-dark-border p-5">
+      <div class="section-label">💡 经营贴士</div>
+      <div id="tips" class="text-xs text-gray-500 leading-relaxed">
+        <p>欢迎来到TikTok带货战场！</p>
+        <p class="mt-2">选品是生死线：女装流量高但退货凶猛，美妆利润厚但流量贵，零食走量但利润薄如纸。</p>
+        <p class="mt-2">量力而行，别第一个月就 All-in 破产了！</p>
+      </div>
+      <button onclick="showSkillPanel()" class="mt-3 w-full py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-bold rounded-lg hover:opacity-90">
+        🎓 技能投资
+      </button>
+    </section>
+  </div>
+</div>
+
+<!-- ==================== MODAL: REPORT ==================== -->
+<div id="reportModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+  <div class="modal-content bg-dark-card border border-dark-border rounded-2xl w-[520px] max-h-[90vh] overflow-y-auto shadow-2xl">
+    <div id="reportContent"></div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: GAME OVER ==================== -->
+<div id="gameOverModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+  <div class="modal-content bg-dark-card border border-neon-red/50 rounded-2xl w-[480px] p-8 text-center shadow-2xl">
+    <div class="text-6xl mb-4">💀</div>
+    <div class="text-3xl font-black text-neon-red gameover-text mb-2">GAME OVER</div>
+    <div class="text-lg text-gray-300 mb-2">公司破产了！</div>
+    <div id="gameOverStats" class="text-sm text-gray-500 mb-6"></div>
+    <div class="text-sm text-gray-400 mb-6 italic" id="gameOverQuote"></div>
+    <button onclick="restartGame()" class="px-8 py-3 bg-gradient-to-r from-neon-cyan to-neon-red rounded-xl text-black font-bold hover:opacity-90 transition-opacity">
+      🔄 重新创业
+    </button>
+  </div>
+</div>
+
+<!-- ==================== MODAL: HISTORY ==================== -->
+<div id="historyModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay" onclick="closeHistory(event)">
+  <div class="modal-content bg-dark-card border border-dark-border rounded-2xl w-[560px] max-h-[80vh] overflow-y-auto shadow-2xl p-6" onclick="event.stopPropagation()">
+    <div class="flex justify-between items-center mb-4">
+      <div class="section-label mb-0">📊 历史记录</div>
+      <button onclick="document.getElementById('historyModal').classList.add('hidden');document.getElementById('historyModal').classList.remove('flex')" class="text-gray-500 hover:text-white text-xl">&times;</button>
+    </div>
+    <!-- 标签页切换 -->
+    <div class="flex gap-2 mb-4 border-b border-dark-border">
+      <button id="tabMonthly" onclick="switchHistoryTab('monthly')" class="px-4 py-2 text-sm font-medium border-b-2 border-neon-cyan text-neon-cyan">月度记录</button>
+      <button id="tabArchive" onclick="switchHistoryTab('archive')" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-white">经营档案</button>
+    </div>
+    <div id="historyContent"></div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: EDIT NAME ==================== -->
+<div id="nameModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay" onclick="closeNameModal(event)">
+  <div class="modal-content bg-dark-card border border-dark-border rounded-2xl w-[400px] p-6 shadow-2xl" onclick="event.stopPropagation()">
+    <div class="section-label">修改公司名称</div>
+    <input type="text" id="nameInput" maxlength="20" class="w-full bg-dark-surface border border-dark-border rounded-lg px-4 py-3 text-white outline-none focus:border-neon-cyan transition-colors mb-4" placeholder="输入公司名称...">
+    <div class="flex gap-3">
+      <button onclick="randomName()" class="flex-1 py-2 rounded-lg border border-dark-border text-sm hover:border-neon-cyan/50 transition-colors">🎲 随机生成</button>
+      <button onclick="confirmName()" class="flex-1 py-2 rounded-lg bg-neon-cyan text-black font-bold text-sm hover:opacity-90 transition-opacity">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- Endorser Offer Modal -->
+<div id="endorserModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm items-center justify-center z-50">
+  <div class="bg-dark-card border-2 border-neon-cyan rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 glow-cyan">
+    <div class="text-center mb-4">
+      <div class="text-3xl mb-2">🌟</div>
+      <div class="text-xl font-bold text-neon-cyan mb-1">恭喜！业绩突破200万</div>
+      <div class="text-sm text-gray-400">顶级代言人向您抛出橄榄枝</div>
+    </div>
+    <div class="bg-dark-surface border border-dark-border rounded-xl p-4 mb-4">
+      <div class="text-sm text-gray-300 mb-3">💼 签约费用：<span class="text-neon-red font-bold">100万元</span></div>
+      <div class="text-sm text-gray-300 mb-3">⏰ 合约期限：<span class="text-neon-cyan font-bold">6个月</span></div>
+      <div class="text-sm text-gray-300 mb-1">📈 代言效果：</div>
+      <div class="text-xs text-gray-400 ml-4">• 每月自然流量 +50%</div>
+      <div class="text-xs text-gray-400 ml-4">• 每月转化率 +2%</div>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="declineEndorser()" class="flex-1 py-3 rounded-xl border border-dark-border text-sm hover:border-neon-red/50 transition-colors">❌ 暂不签约</button>
+      <button onclick="acceptEndorser()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-red text-black font-bold text-sm hover:opacity-90 transition-opacity">✅ 立即签约</button>
+    </div>
+  </div>
+</div>
+
+<!-- CEO Live Modal -->
+<div id="ceoLiveModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm items-center justify-center z-50">
+  <div class="bg-dark-card border-2 border-neon-red rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 animate-pulse-slow">
+    <div class="text-center mb-4">
+      <div class="text-5xl mb-3">⚠️</div>
+      <div class="text-2xl font-bold text-neon-red mb-2">资金告急！</div>
+      <div class="text-sm text-gray-400">账上余额不足5000元，发不出主播工资了</div>
+    </div>
+    <div class="bg-dark-surface border border-neon-red/30 rounded-xl p-4 mb-4">
+      <div class="text-center mb-3">
+        <div class="text-lg font-bold text-neon-cyan mb-2">💼 总裁进直播间特惠专场</div>
+        <div class="text-xs text-gray-400 mb-3">老板亲自下场，流量爆炸！</div>
+      </div>
+      <div class="text-sm text-gray-300 mb-2">🎯 特殊效果：</div>
+      <div class="text-xs text-gray-400 ml-4 mb-1">• 本月自然流量 ×3 倍</div>
+      <div class="text-xs text-gray-400 ml-4 mb-1">• 转化率 5%</div>
+      <div class="text-xs text-gray-400 ml-4">• 无需支付主播工资</div>
+    </div>
+    <div class="bg-neon-red/10 border border-neon-red/30 rounded-lg p-3 mb-4 text-center">
+      <div class="text-xs text-neon-red">⚠️ 拒绝亲播视为破产，游戏结束</div>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="declineCeoLive()" class="flex-1 py-3 rounded-xl border border-dark-border text-sm hover:border-neon-red transition-colors">😭 认输破产</button>
+      <button onclick="acceptCeoLive()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-neon-red to-neon-cyan text-black font-bold text-sm hover:opacity-90 transition-opacity">🔥 总裁出战</button>
+    </div>
+  </div>
+</div>
+
+<!-- Final Review Modal (36个月结束) -->
+<div id="finalReviewModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm items-center justify-center z-50">
+  <div class="bg-dark-card border-2 border-neon-cyan rounded-2xl shadow-2xl max-w-2xl w-full mx-4">
+    <div id="finalReviewContent"></div>
+  </div>
+</div>
+
+<!-- 直播动画弹窗 -->
+<div id="liveAnimationModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-[60]">
+  <div class="bg-dark-card border-2 border-neon-cyan rounded-2xl shadow-2xl max-w-md w-full mx-4 p-8 text-center">
+    <div id="liveStepText" class="text-2xl font-bold mb-4"></div>
+    <div class="flex justify-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-neon-cyan"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 成就解锁弹窗 -->
+<div id="achievementModal" class="hidden flex fixed inset-0 bg-black/80 backdrop-blur-sm items-center justify-center z-50">
+  <div class="bg-gradient-to-br from-yellow-500 to-orange-600 border-2 border-yellow-300 rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 text-center">
+    <div class="text-5xl mb-3">🏆</div>
+    <div class="text-2xl font-bold text-white mb-2" id="achievementName"></div>
+    <div class="text-sm text-yellow-100 mb-3" id="achievementDesc"></div>
+    <div class="text-xs text-yellow-200" id="achievementReward"></div>
+    <div class="text-xs text-yellow-100 mt-3">3秒后自动关闭...</div>
+  </div>
+</div>
+
+<!-- Toast提示 -->
+<div id="toastContainer" class="fixed top-20 right-4 z-50 space-y-2"></div>
+
+<div id="skillModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm items-center justify-center z-50">
+  <div class="bg-dark-card border-2 border-purple-500 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 p-6">
+    <div class="text-center mb-4">
+      <div class="text-3xl font-bold">🎓 技能投资</div>
+      <div class="text-sm text-gray-400 mt-2">投资技能提升长期竞争力</div>
+    </div>
+    <div id="skillContent" class="space-y-3 max-h-96 overflow-y-auto"></div>
+    <button onclick="closeSkillPanel()" class="mt-4 w-full py-3 bg-dark-surface text-gray-400 font-bold rounded-lg hover:bg-dark-border">关闭</button>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// GAME STATE
+// ============================================================
+console.log('Game JavaScript loaded successfully!');
+const STATE = {
+  balance: 1000000,
+  month: 1,
+  companyName: '未来科技MCN',
+  totalRevenue: 0,
+  totalProfit: 0,
+  selectedCategory: null,
+  selectedHost: null,
+  adBudget: 0,
+  selectedMarketing: 'none',
+  categoryMargin: 0.75, // 通用毛利率
+  history: [],
+  trafficHistory: [], // 最近3月流量
+  hostHistory: [], // 最近主播选择历史
+  categoryHistory: [], // 最近品类选择历史（用于疲劳度计算）
+  endorserLevel: null, // 代言人等级: 'short'/'star'/'top'
+  endorserMonthsLeft: 0, // 代言人剩余月数
+  endorserTrafficBonus: 0, // 代言人流量加成比例
+  endorserConversionBonus: 0, // 代言人转化率加成
+  bigEvents: [], // 重大事件记录
+  finalWish: '', // 玩家的最终愿望
+  gameOver: false, // 游戏是否结束
+  achievements: [], // 已解锁的成就
+  consecutiveProfits: 0, // 连续盈利月数
+  archives: [], // 历史存档
+  companyTier: 'garage', // 公司等级
+  unlockedSkills: [], // 已解锁技能
+};
+
+// ============================================================
+// DATA TABLES
+// ============================================================
+const CATEGORIES = {
+  fashion: { name: '女装', emoji: '👗', price: 80, margin: 0.45, returnRate: 0.35, naturalTraffic: 80000, conversionBoost: -0.015 },
+  beauty:  { name: '美妆', emoji: '💄', price: 200, margin: 0.65, returnRate: 0.18, naturalTraffic: 8000, conversionBoost: 0.005 },
+  snack:   { name: '零食', emoji: '🍿', price: 50, margin: 0.72, returnRate: 0.22, naturalTraffic: 30000, conversionBoost: 0.01 },
+};
+
+const HOSTS = {
+  student: { name: '大学生主播', emoji: '🎓', salary: 5000, conversion: 0.01, commission: 0 },
+  pro:     { name: '成熟主播', emoji: '🎙️', salary: 30000, conversion: 0.03, commission: 0 },
+  topv:    {
+    name: '头部大V',
+    emoji: '👑',
+    salary: 100000,
+    conversion: 0.08,
+    commissionByCategory: {
+      fashion: 0.15,  // 冲量品低佣金
+      beauty: 0.25,   // 美妆标准佣金
+      snack: 0.35     // 零食高佣金
+    }
+  },
+  ceo:     { name: '总裁亲播', emoji: '🎯', salary: 0, conversion: 0.05, commission: 0, trafficBonus: 3 },
+};
+
+const MARKETING = {
+  none:  { name: '无营销', cost: 0, trafficBonus: 0, conversionBonus: 0 },
+  koc:   { name: '铺KOC短视频', cost: 50000, trafficBonus: 50000, conversionBonus: 0 },
+  celeb: { name: '明星代言切片', cost: 200000, trafficBonus: 100000, conversionBonus: 0.01 },
+};
+
+// 成就系统
+const ACHIEVEMENTS = {
+  first_profit: { name: '首次盈利', desc: '第一次月利润>0', reward: '信心+100' },
+  millionaire: { name: '百万富翁', desc: '单月利润>100万', reward: '解锁高级策略' },
+  tycoon: { name: '带货大亨', desc: '累计利润>1000万', reward: '行业地位提升' },
+  survivor: { name: '绝地求生', desc: '从破产边缘翻盘', reward: '危机管理能力' },
+  perfectionist: { name: '完美主义者', desc: '连续6个月盈利', reward: '稳定经营奖励' }
+};
+
+const COMPANY_TIERS = {
+  garage: { name: '车库工作室', tier: 0, unlockProfit: 0, monthlyFee: 0 },
+  startup: { name: '创业工作室', tier: 1, unlockProfit: 5000000, monthlyFee: 20000 },
+  midsize: { name: 'MCN中型机构', tier: 2, unlockProfit: 50000000, monthlyFee: 100000 },
+  enterprise: { name: '头部MCN集团', tier: 3, unlockProfit: 200000000, monthlyFee: 500000 },
+};
+
+const SKILLS = {
+  hostTraining: { name: '主播培训', cost: 500000, effect: { proConversionBonus: 0.01 } },
+  brandBuilding: { name: '品牌建设', cost: 1000000, effect: { trafficBonus: 0.15 } },
+  fanOps: { name: '粉丝运营', cost: 800000, effect: { conversionBonus: 0.02 } },
+  warehouse: { name: '仓储优化', cost: 800000, effect: { returnRateReduction: 0.03 } },
+  qualityControl: { name: '品控体系', cost: 1500000, effect: { fineReduction: 0.4 } },
+  logistics: { name: '物流合作', cost: 1200000, effect: { costReduction: 0.08 } },
+};
+
+const RANDOM_EVENTS = [
+  { text: '🎉 平台算法扶持！本月自然流量翻倍！', type: 'good', apply: (d) => { d.naturalTraffic *= 2; } },
+  { text: '😱 主播塌房黑料！本月转化率减半！', type: 'bad', apply: (d) => { d.conversion *= 0.5; } },
+  { text: '💥 品控翻车！被羊毛党薅秃，退货率强制提升至80%！', type: 'bad', apply: (d) => { d.returnRate = 0.8; } },
+  { text: '🔥 直播间上热搜爆梗！天降20万免费流量！', type: 'good', apply: (d) => { d.bonusTraffic += 200000; } },
+  { text: '💰 投资人青睐！获得500万融资！', type: 'good', apply: (d) => { d.bonusCash = 5000000; } },
+  { text: '🚨 用户信任危机！品牌口碑崩塌，转化率-70%！', type: 'bad', apply: (d) => { d.conversion *= 0.3; } },
+  { text: '🎬 营销神作！创意视频爆火，GMV翻倍！', type: 'good', apply: (d) => { d.naturalTraffic *= 2; d.conversion *= 1.5; } },
+  { text: '⚠️ 供应链断裂！产品缺货，流量无法转化！', type: 'bad', apply: (d) => { d.conversion *= 0.4; } },
+];
+
+// 季节性事件日历
+const SEASONAL_EVENTS = {
+  2: { name: '春节消费高峰', prob: 0.9, text: '🧧 春节消费热潮！流量×1.5，转化率+30%', type: 'good',
+       apply: (d) => { d.naturalTraffic *= 1.5; d.conversion *= 1.3; d.returnRate += 0.1; } },
+  3: { name: '315消费者保护日', prob: 0.35, text: '⚖️ 315抽查！被罚款GMV的10%', type: 'bad',
+       apply: (d) => { d.fine = 0.1; } },
+  6: { name: '618年中大促', prob: 0.8, text: '🛍️ 618大促！流量×2，但广告成本+50%', type: 'mixed',
+       apply: (d) => { d.naturalTraffic *= 2; d.marketingCost *= 1.5; } },
+  11: { name: '双十一购物节', prob: 1.0, text: '🎉 双十一！流量×2.5，转化率×2，退货率+15%', type: 'good',
+        apply: (d) => { d.naturalTraffic *= 2.5; d.conversion *= 2; d.returnRate += 0.15; } },
+};
+
+const QUOTES_PROFIT = [
+  '老板牛逼！下个月咱们敲钟上市！',
+  '这个月的利润够买一台保时捷了（虽然是模型车）。',
+  '继续这样下去，我这个财务总监要失业了——因为钱多到数不过来。',
+  '恭喜老板，终于不用吃泡面了！',
+  '投资人看了都流泪，这ROI简直是印钞机。',
+];
+const QUOTES_SMALL_PROFIT = [
+  '赚是赚了……够请团队喝杯瑞幸吗？',
+  '利润比纸还薄，但至少没赔，谢天谢地。',
+  '老板，这利润率还不如去摆地摊。',
+  '聊胜于无吧，至少方向是对的。',
+];
+const QUOTES_LOSS = [
+  '老板，照这个退货率，咱们马上要去要饭了。',
+  '这个月的财报我不敢给投资人看，怕他们当场猝死。',
+  '建议老板转行，听说煎饼摊利润率比咱们高。',
+  '亏麻了……我已经在更新简历了。',
+  '恭喜老板，成功解锁「月光族」成就。',
+];
+const QUOTES_BIG_LOSS = [
+  '这不是亏损，这是慈善事业。',
+  '老板你是不是在帮快递行业做GDP贡献？',
+  '我已经不敢算账了，计算器都在哭。',
+  '建议直接原地注销公司吧。',
+];
+const GAMEOVER_QUOTES = [
+  '创业维艰，但你可能更适合上班。',
+  '你的公司存活时间比大部分直播间的在线人数还短。',
+  '别灰心，马云也失败过……但人家没亏这么快。',
+  '下次记住：梭哈是一种智慧，但不适合带货。',
+];
+
+const COMPANY_NAMES = [
+  '宇宙无敌MCN', '暴富传媒', '流量收割机', '退货之王传媒',
+  '破产边缘科技', '一夜暴富工作室', '韭菜联盟', '销量狂飙MCN',
+  '带货小天才', '人间清醒传媒', '爆单工厂', '直播之神公司',
+];
+
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+function fmt(n) {
+  if (Math.abs(n) >= 100000000) return '¥' + (n / 100000000).toFixed(2) + '亿';
+  if (Math.abs(n) >= 10000) return '¥' + (n / 10000).toFixed(1) + '万';
+  return '¥' + n.toLocaleString('zh-CN');
+}
+function fmtNum(n) {
+  if (n >= 100000000) return (n / 100000000).toFixed(2) + '亿';
+  if (n >= 10000) return (n / 10000).toFixed(1) + '万';
+  return n.toLocaleString('zh-CN');
+}
+
+// Toast提示
+function showToast(msg, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  const colors = { success: 'bg-green-600', warning: 'bg-yellow-600', error: 'bg-red-600', info: 'bg-blue-600' };
+  toast.className = `${colors[type]} text-white px-4 py-3 rounded-lg shadow-lg animate-pulse`;
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// 直播动画
+function showLiveAnimation(calcData, record) {
+  try {
+    const modal = document.getElementById('liveAnimationModal');
+    const textEl = document.getElementById('liveStepText');
+
+    if (!modal || !textEl) {
+      console.error('动画元素未找到，直接显示报表');
+      showReport(record);
+      return;
+    }
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    const steps = [
+      { text: '📱 直播间开启...', delay: 600 },
+      { text: `👥 观众涌入：${fmtNum(calcData.traffic)}人`, delay: 800 },
+      { text: `🛒 转化中...`, delay: 1000 },
+      { text: `💰 GMV：¥${fmt(record.gmv)}`, delay: 700 },
+      { text: record.netProfit > 0 ? '🎉 盈利！' : '😰 亏损...', delay: 500 }
+    ];
+
+    let step = 0;
+    function showNextStep() {
+      if (step >= steps.length) {
+        console.log('🎬 直播动画结束，隐藏弹窗');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        console.log('✅ 直播弹窗已隐藏');
+        // 先检查成就，成就弹窗关闭后再显示报表
+        checkAchievements(record, function() {
+          showReport(record);
+        });
+        return;
+      }
+      textEl.textContent = steps[step].text;
+      const currentDelay = steps[step].delay;
+      step++;
+      setTimeout(showNextStep, currentDelay);
+    }
+    showNextStep();
+  } catch (e) {
+    console.error('动画执行错误:', e);
+    showReport(record);
+  }
+}
+
+// 成就检查
+function checkAchievements(record, callback) {
+  console.log('🔍 检查成就，利润:', record.netProfit, '有回调:', !!callback);
+  const newAchievements = [];
+
+  if (!STATE.achievements.includes('first_profit') && record.netProfit > 0) {
+    newAchievements.push('first_profit');
+  }
+  if (!STATE.achievements.includes('millionaire') && record.netProfit > 1000000) {
+    newAchievements.push('millionaire');
+  }
+  if (!STATE.achievements.includes('tycoon') && STATE.totalProfit > 10000000) {
+    newAchievements.push('tycoon');
+  }
+  if (!STATE.achievements.includes('survivor') && STATE.balance < 200000 && record.netProfit > 500000) {
+    newAchievements.push('survivor');
+  }
+  if (!STATE.achievements.includes('perfectionist') && STATE.consecutiveProfits >= 6) {
+    newAchievements.push('perfectionist');
+  }
+
+  if (newAchievements.length > 0) {
+    console.log('🎉 解锁新成就:', newAchievements);
+    STATE.achievements.push(...newAchievements);
+    showAchievementUnlock(newAchievements[0], callback);
+  } else {
+    console.log('✅ 没有新成就，直接执行回调');
+    if (callback && typeof callback === 'function') {
+      callback();
+    } else {
+      console.warn('⚠️ 回调不是函数:', typeof callback);
+    }
+  }
+}
+
+function showAchievementUnlock(key, callback) {
+  console.log('🏆 显示成就:', key, '有回调:', !!callback);
+  const ach = ACHIEVEMENTS[key];
+  const modal = document.getElementById('achievementModal');
+  document.getElementById('achievementName').textContent = ach.name;
+  document.getElementById('achievementDesc').textContent = ach.desc;
+  document.getElementById('achievementReward').textContent = '奖励：' + ach.reward;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+
+  // 3秒后自动关闭并执行回调
+  setTimeout(() => {
+    console.log('✅ 成就弹窗关闭，准备执行回调');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex'); // 确保完全隐藏
+    if (callback && typeof callback === 'function') {
+      console.log('📞 调用回调函数，类型:', typeof callback);
+      callback();
+    } else {
+      console.warn('⚠️ 回调不是函数:', typeof callback);
+    }
+  }, 3000);
+}
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+// ============================================================
+// ANIMATED NUMBER
+// ============================================================
+function animateNumber(el, target, prefix = '¥', duration = 800) {
+  const start = parseInt(el.dataset.value || '0');
+  el.dataset.value = target;
+  const diff = target - start;
+  if (diff === 0) { el.textContent = prefix + target.toLocaleString('zh-CN'); return; }
+  const startTime = performance.now();
+  function step(now) {
+    const t = Math.min((now - startTime) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 3); // easeOutCubic
+    const current = Math.round(start + diff * ease);
+    el.textContent = prefix + current.toLocaleString('zh-CN');
+    el.classList.add('number-roll');
+    if (t < 1) requestAnimationFrame(step);
+    else el.classList.remove('number-roll');
+  }
+  requestAnimationFrame(step);
+}
+
+// ============================================================
+// SELECTION HANDLERS
+// ============================================================
+function selectCategory(el, key) {
+  console.log('selectCategory called:', key);
+  document.querySelectorAll('#categoryCards .card-selectable').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  STATE.selectedCategory = key;
+
+  // 风险提示：市场疲劳度
+  const recentUse = STATE.categoryHistory.filter(c => c === key).length;
+  if (recentUse >= 2) {
+    showToast(`⚠️ 市场疲劳：${CATEGORIES[key].name}连续${recentUse}次选择，效果将大幅下降！`, 'warning');
+  }
+
+  // 诱惑提示：上月表现好
+  const lastMonth = STATE.history[STATE.history.length - 1];
+  if (lastMonth && lastMonth.category === key && lastMonth.netProfit > 500000) {
+    showToast(`💡 上月${CATEGORIES[key].name}大赚${fmt(lastMonth.netProfit)}，要继续吗？`, 'success');
+  }
+
+  document.getElementById('marginSection').classList.remove('hidden');
+  updateEstimates();
+}
+
+function selectHost(el, key) {
+  document.querySelectorAll('#hostCards .card-selectable').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  STATE.selectedHost = key;
+  updateEstimates();
+}
+
+function selectMarketing(el, key) {
+  document.querySelectorAll('#marketingCards .card-selectable').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  STATE.selectedMarketing = key;
+  updateEstimates();
+}
+
+function updateAdBudget(val) {
+  STATE.adBudget = parseInt(val);
+  document.getElementById('adBudgetDisplay').textContent = fmt(STATE.adBudget);
+  document.getElementById('adTrafficDisplay').textContent = fmtNum(Math.floor(STATE.adBudget / 2));
+  updateEstimates();
+}
+
+// ============================================================
+// BEAUTY MARGIN CONTROL
+// ============================================================
+function getMarginRiskData(margin, category = 'beauty') {
+  // 品类特异化风险系数（增强惩罚）
+  const categoryConfig = {
+    fashion: { baseReturn: 0.25, returnMultiplier: 2.5, fineProb: 1.5, convPenalty: 0.08 },
+    beauty:  { baseReturn: 0.15, returnMultiplier: 2.8, fineProb: 1.8, convPenalty: 0.09 },
+    snack:   { baseReturn: 0.20, returnMultiplier: 3.2, fineProb: 2.0, convPenalty: 0.10 },
+  };
+
+  const config = categoryConfig[category] || categoryConfig.beauty;
+  const excess = Math.max(0, margin - 0.70);
+
+  const returnRate = config.baseReturn + excess * config.returnMultiplier;
+  const fineProb = excess * config.fineProb;
+  const conversionPenalty = excess * config.convPenalty;
+
+  let level, levelText, levelColor;
+  if (margin <= 0.78) { level = 'low'; levelText = '🟢 低'; levelColor = 'text-green-400'; }
+  else if (margin <= 0.85) { level = 'mid'; levelText = '🟡 中'; levelColor = 'text-yellow-400'; }
+  else if (margin <= 0.90) { level = 'high'; levelText = '🟠 高'; levelColor = 'text-orange-400'; }
+  else { level = 'extreme'; levelText = '🔴 极高'; levelColor = 'text-red-400'; }
+
+  return { returnRate: Math.min(returnRate, 0.85), fineProb: Math.min(fineProb, 0.45), conversionPenalty, level, levelText, levelColor };
+}
+
+function updateMargin(val) {
+  const margin = parseInt(val) / 100;
+  STATE.categoryMargin = margin;
+  const risk = getMarginRiskData(margin, STATE.category);
+  document.getElementById('marginDisplay').textContent = val + '%';
+  document.getElementById('returnDisplay').textContent = (risk.returnRate * 100).toFixed(0) + '%';
+  const riskEl = document.getElementById('riskDisplay');
+  riskEl.textContent = risk.levelText;
+  riskEl.className = 'text-lg font-bold ' + risk.levelColor;
+
+  const descs = {
+    low: '标准品质，退货率稳定，市场监管风险极低。稳健经营之选。',
+    mid: '成本有所压缩，产品质量出现波动。退货率明显上升，有一定概率被市场监管抽查罚款。',
+    high: '低成本供应链，品质问题频发。退货潮涌现，监管罚款概率大增，消费者信任度下降导致转化率降低。',
+    extreme: '极限压价！产品几乎是贴牌白牌。退货率飙升、监管罚款概率极高、转化率严重受损。赌命式经营！',
+  };
+  document.getElementById('riskDesc').textContent = descs[risk.level];
+  updateEstimates();
+}
+
+// ============================================================
+// ESTIMATE PANEL
+// ============================================================
+function updateEstimates() {
+  const cat = CATEGORIES[STATE.selectedCategory];
+  const host = HOSTS[STATE.selectedHost];
+  const mkt = MARKETING[STATE.selectedMarketing];
+
+  if (!cat || !host) {
+    document.getElementById('estTraffic').textContent = '-';
+    document.getElementById('estConversion').textContent = '-';
+    document.getElementById('estGMV').textContent = '-';
+    document.getElementById('estCost').textContent = '-';
+    return;
+  }
+
+  const traffic = cat.naturalTraffic + Math.floor(STATE.adBudget / 2) + mkt.trafficBonus;
+  const conversion = host.conversion + mkt.conversionBonus;
+  const gmv = traffic * conversion * cat.price;
+  // 所有品类都使用通用毛利率和风险数据
+  const riskData = getMarginRiskData(STATE.categoryMargin, STATE.category);
+  const returnRate = riskData.returnRate;
+  const realSales = gmv * (1 - returnRate);
+  // 计算佣金：头部大V按品类浮动，其他主播用固定值
+  const hostCommission = host.commissionByCategory ? host.commissionByCategory[STATE.category] : (host.commission || 0);
+  const totalCost = STATE.adBudget + mkt.cost + host.salary + (hostCommission > 0 ? realSales * hostCommission : 0);
+
+  document.getElementById('estTraffic').textContent = fmtNum(traffic);
+  document.getElementById('estConversion').textContent = (conversion * 100).toFixed(1) + '%';
+  document.getElementById('estGMV').textContent = fmt(Math.round(gmv));
+  document.getElementById('estCost').textContent = fmt(Math.round(totalCost));
+}
+
+// ============================================================
+// CORE: START LIVE
+// ============================================================
+function startLive() {
+  if (STATE.gameOver) return;
+  if (!STATE.selectedCategory) { shake('categoryCards'); return; }
+  if (!STATE.selectedHost) { shake('hostCards'); return; }
+
+  // Check if balance < 5000 and not CEO live
+  const host = HOSTS[STATE.selectedHost];
+  if (STATE.balance < 5000 && STATE.selectedHost !== 'ceo') {
+    document.getElementById('ceoLiveModal').classList.remove('hidden');
+    document.getElementById('ceoLiveModal').classList.add('flex');
+    return;
+  }
+
+  // Check if player can afford this month
+  const mkt = MARKETING[STATE.selectedMarketing];
+  const minCost = STATE.adBudget + mkt.cost + host.salary;
+  if (minCost > STATE.balance) {
+    showToast('资金不足！请减少预算或换个便宜方案。');
+    return;
+  }
+
+  const cat = CATEGORIES[STATE.selectedCategory];
+
+  // 所有品类使用通用毛利率和风险数据
+  const riskData = getMarginRiskData(STATE.categoryMargin, STATE.category);
+
+  // Build calc data (can be modified by events)
+  const calcData = {
+    naturalTraffic: cat.naturalTraffic,
+    conversion: Math.max(0.001, host.conversion + mkt.conversionBonus + (cat.conversionBoost || 0)),
+    returnRate: riskData.returnRate,
+    bonusTraffic: 0,
+    margin: STATE.categoryMargin,
+    regulatoryFine: 0,
+    qualityEvent: null,
+    hostEvent: null, // 主播特殊事件
+    gmvPenalty: 0, // GMV惩罚比例
+  };
+
+  // 应用技能效果
+  STATE.unlockedSkills.forEach(skillId => {
+    const skill = SKILLS[skillId];
+    if (skill.effect.proConversionBonus && STATE.selectedHost === 'pro') {
+      calcData.conversion += skill.effect.proConversionBonus;
+    }
+    if (skill.effect.trafficBonus) {
+      calcData.naturalTraffic *= (1 + skill.effect.trafficBonus);
+    }
+    if (skill.effect.conversionBonus) {
+      calcData.conversion += skill.effect.conversionBonus;
+    }
+    if (skill.effect.returnRateReduction) {
+      calcData.returnRate = Math.max(0, calcData.returnRate - skill.effect.returnRateReduction);
+    }
+  });
+
+  // 市场疲劳度：连续使用同一品类降低效果
+  const recentCategories = STATE.categoryHistory.slice(-3);
+  const sameCount = recentCategories.filter(c => c === STATE.selectedCategory).length;
+  if (sameCount >= 2) {
+    const penalty = sameCount * 0.08;
+    calcData.naturalTraffic *= (1 - penalty);
+    calcData.conversion *= (1 - penalty * 0.5);
+  }
+  STATE.categoryHistory.push(STATE.selectedCategory);
+  if (STATE.categoryHistory.length > 6) STATE.categoryHistory.shift();
+
+  // 触发季节性事件或随机事件
+  let eventText = null;
+  const monthMod = STATE.month % 12;
+  const seasonalEvent = SEASONAL_EVENTS[monthMod];
+
+  if (seasonalEvent && Math.random() < seasonalEvent.prob) {
+    eventText = seasonalEvent.text;
+    seasonalEvent.apply(calcData);
+  } else if (Math.random() < 0.15) {
+    const randomEvent = RANDOM_EVENTS[Math.floor(Math.random() * RANDOM_EVENTS.length)];
+    eventText = randomEvent.text;
+    randomEvent.apply(calcData);
+  }
+
+  // 主播历史追踪和特殊事件检测
+  STATE.hostHistory.push(STATE.selectedHost);
+  if (STATE.hostHistory.length > 3) STATE.hostHistory.shift();
+
+  // 连续两次以上选择成熟主播 → 主播和运营谈恋爱跑路
+  if (STATE.hostHistory.length >= 2) {
+    const lastTwo = STATE.hostHistory.slice(-2);
+    if (lastTwo.every(h => h === 'pro') && Math.random() < 0.25) {
+      const penalty = 0.3 + Math.random() * 0.4; // 30%-70%
+      calcData.gmvPenalty = penalty;
+      calcData.hostEvent = `💔 主播和运营谈恋爱跑路了！本月GMV损失 ${(penalty * 100).toFixed(0)}%！`;
+      STATE.bigEvents.push({ month: STATE.month, event: calcData.hostEvent });
+    }
+  }
+
+  // 市场随机波动：每月流量和转化率有±15%的随机变化
+  const trafficFluctuation = 0.85 + Math.random() * 0.3; // 0.85-1.15
+  const conversionFluctuation = 0.9 + Math.random() * 0.2; // 0.9-1.1
+  calcData.naturalTraffic *= trafficFluctuation;
+  calcData.conversion *= conversionFluctuation;
+
+  // 连续选择头部大V → 风险递增
+  if (STATE.hostHistory.length >= 2) {
+    const lastTwo = STATE.hostHistory.slice(-2);
+    const lastThree = STATE.hostHistory.slice(-3);
+
+    // 连续2次：25%概率塌方
+    if (lastTwo.every(h => h === 'topv') && Math.random() < 0.25) {
+      calcData.conversion *= 0.5;
+      calcData.hostEvent = `😱 头部大V黑料塌方！粉丝信任崩塌，转化率减半！`;
+      STATE.bigEvents.push({ month: STATE.month, event: calcData.hostEvent });
+    }
+    // 连续3次：40%概率塌方且更严重
+    else if (lastThree.length === 3 && lastThree.every(h => h === 'topv') && Math.random() < 0.4) {
+      calcData.conversion *= 0.3;
+      calcData.naturalTraffic *= 0.6;
+      calcData.hostEvent = `💥 头部大V被封号！流量和转化率暴跌！`;
+      STATE.bigEvents.push({ month: STATE.month, event: calcData.hostEvent });
+    }
+  }
+
+  // 代言人效果（如果在有效期内）
+  if (STATE.endorserMonthsLeft > 0) {
+    const trafficBonus = STATE.endorserTrafficBonus || 1.5;
+    const conversionBonus = STATE.endorserConversionBonus || 0.02;
+    calcData.naturalTraffic = Math.floor(calcData.naturalTraffic * (1 + trafficBonus));
+    calcData.conversion += conversionBonus;
+    STATE.endorserMonthsLeft--;
+  }
+
+  // 总裁亲播效果（3倍流量）
+  if (STATE.selectedHost === 'ceo') {
+    calcData.naturalTraffic = Math.floor(calcData.naturalTraffic * 3);
+  }
+
+  // 品牌心智下降检测（连续三月流量下滑）- 在计算前检测
+  let brandMindDecline = false;
+  if (STATE.trafficHistory.length === 3) {
+    if (STATE.trafficHistory[0] > STATE.trafficHistory[1] && STATE.trafficHistory[1] > STATE.trafficHistory[2]) {
+      brandMindDecline = true;
+      calcData.conversion = Math.max(0.005, calcData.conversion - 0.005); // 转化率-0.5%
+    }
+  }
+
+  // Random event
+  let event = null;
+  if (Math.random() < 0.15) {
+    event = pick(RANDOM_EVENTS);
+    event.apply(calcData);
+  }
+
+  // Calculate
+  const totalTraffic = calcData.naturalTraffic + Math.floor(STATE.adBudget / 2) + mkt.trafficBonus + calcData.bonusTraffic;
+  let totalGMV = totalTraffic * calcData.conversion * cat.price;
+  // 应用主播事件的GMV惩罚（主播跑路）
+  if (calcData.gmvPenalty > 0) {
+    totalGMV = totalGMV * (1 - calcData.gmvPenalty);
+  }
+  const realSales = totalGMV * (1 - calcData.returnRate);
+  let goodsCost = realSales * (1 - calcData.margin);
+
+  // 应用物流技能的成本减免
+  if (STATE.unlockedSkills.includes('logistics')) {
+    goodsCost *= (1 - SKILLS.logistics.effect.costReduction);
+  }
+
+  const hostCost = host.salary + (host.commission > 0 ? realSales * host.commission : 0);
+  const marketingCost = STATE.adBudget + mkt.cost;
+  const companyFee = COMPANY_TIERS[STATE.companyTier].monthlyFee;
+
+  // 应用事件罚款
+  let eventFine = 0;
+  if (calcData.fine) {
+    eventFine = totalGMV * calcData.fine;
+  }
+
+  const netProfit = realSales - goodsCost - hostCost - marketingCost - calcData.regulatoryFine - companyFee - eventFine;
+
+  // Update state
+  STATE.balance += netProfit;
+
+  // 应用事件额外现金
+  if (calcData.bonusCash) {
+    STATE.balance += calcData.bonusCash;
+  }
+
+  STATE.totalRevenue += realSales;
+  STATE.totalProfit += netProfit;
+
+  // 流量历史追踪（用于下次品牌心智下降检测）
+  STATE.trafficHistory.push(totalTraffic);
+  if (STATE.trafficHistory.length > 3) STATE.trafficHistory.shift();
+
+  const record = {
+    month: STATE.month,
+    category: cat.name,
+    host: host.name,
+    marketing: mkt.name,
+    adBudget: STATE.adBudget,
+    totalTraffic,
+    conversion: calcData.conversion,
+    totalGMV: Math.round(totalGMV),
+    returnRate: calcData.returnRate,
+    realSales: Math.round(realSales),
+    goodsCost: Math.round(goodsCost),
+    hostCost: Math.round(hostCost),
+    marketingCost: Math.round(marketingCost),
+    companyFee: Math.round(companyFee),
+    regulatoryFine: Math.round(calcData.regulatoryFine),
+    qualityEvent: calcData.qualityEvent,
+    hostEvent: calcData.hostEvent, // 主播特殊事件
+    margin: calcData.margin,
+    netProfit: Math.round(netProfit),
+    event: eventText, // 季节性事件或随机事件
+    brandMindDecline,
+    balance: Math.round(STATE.balance),
+    totalCost: Math.round(goodsCost + hostCost + marketingCost + companyFee + calcData.regulatoryFine),
+  };
+  STATE.history.push(record);
+
+  showLiveAnimation(calcData, record);
+
+  // 检查是否到达36个月（游戏结束）- 在showReport之后，closeReport之前检查
+  if (STATE.month >= 36) {
+    STATE.gameOver = true; // 标记游戏结束，阻止closeReport递增月份
+    saveGameArchive(); // 自动保存本次经营结果档案
+    setTimeout(() => showFinalReview(), 1500);
+    return;
+  }
+
+  // 检查累计利润，弹出对应等级的代言人签约选项
+  setTimeout(() => {
+    if (STATE.totalProfit >= 20000000 && STATE.endorserLevel !== 'top' && STATE.endorserMonthsLeft === 0) {
+      showEndorserOffer('top', 10000000, 12, 0.8, 0.03); // 顶流：1000万，12个月，流量+80%，转化率+3%
+    } else if (STATE.totalProfit >= 10000000 && STATE.endorserLevel !== 'star' && STATE.endorserLevel !== 'top' && STATE.endorserMonthsLeft === 0) {
+      showEndorserOffer('star', 5000000, 6, 0.5, 0.02); // 当红：500万，6个月，流量+50%，转化率+2%
+    } else if (STATE.totalProfit >= 2000000 && !STATE.endorserLevel && STATE.endorserMonthsLeft === 0) {
+      showEndorserOffer('short', 1000000, 3, 0.3, 0.015); // 短期：100万，3个月，流量+30%，转化率+1.5%
+    }
+  }, 1000);
+}
+
+// ============================================================
+// REPORT MODAL
+// ============================================================
+function generateFinancialQuote(r) {
+  const profit = r.netProfit;
+  let quote = '';
+
+  if (profit > 1000000) {
+    const quotes = [
+      '老板，这个月我的工资要翻番！我要给你换一个金色的财务报表框！',
+      '我建议你现在就去买豪车吧，别等到月底——这个月肯定就烧没了。',
+      '这利润…… 我已经给投资人预约了见面，他们都在排队想投你。',
+      '🤑 百万级别利润！我的建议是：立即融资，继续梭哈！',
+      '老板，你确定没有偷税漏税？这个数字太离谱了！',
+    ];
+    quote = pick(quotes);
+  } else if (profit > 500000) {
+    quote = pick(['50-100万的区间，稳健得有点无趣。但这就是我喜欢的节奏！', '这个月我没什么好吐槽的，继续保持这个状态就行。', '可以考虑给自己加个奖金了，这个月是真的不错。']);
+  } else if (profit > 100000) {
+    quote = pick(QUOTES_SMALL_PROFIT);
+  } else if (profit > 0) {
+    quote = pick(['利润比纸还薄，但至少没赔。建议你多学学供应链管理。', '这利润……连给员工发奖金都得掰碎了用。', '咦，赚钱了诶！虽然不多，但方向对了。']);
+  } else if (profit > -100000) {
+    quote = pick(QUOTES_LOSS);
+  } else {
+    const quotes = ['我已经在更新简历了……', '这个月的财报我都不敢给投资人看。', '建议原地注销，别浪费钱了。', '🔴 巨亏！我有点怀疑你是不是在故意赔钱给某个人…… '];
+    quote = pick(quotes);
+  }
+
+  if (r.hostEvent?.includes('跑路')) quote += '\n\n（附注：你的主播跑了，这怪你运气不好。下次记得签保险金。）';
+  if (r.qualityEvent?.includes('质量')) quote += '\n\n（附注：质量问题频发，我建议你重新审视供应链。）';
+  if (r.brandMindDecline) quote += '\n\n（附注：品牌心智连续下滑，消费者开始遗忘你。需要紧急投入品牌复苏计划。）';
+
+  return quote;
+}
+
+function showReport(r) {
+  console.log('📊 显示报表，月份:', r.month, '利润:', r.netProfit);
+
+  // 强制隐藏所有其他弹窗
+  const liveModal = document.getElementById('liveAnimationModal');
+  const achieveModal = document.getElementById('achievementModal');
+  if (liveModal) {
+    liveModal.classList.add('hidden');
+    liveModal.classList.remove('flex');
+  }
+  if (achieveModal) {
+    achieveModal.classList.add('hidden');
+    achieveModal.classList.remove('flex');
+  }
+
+  const modal = document.getElementById('reportModal');
+  const content = document.getElementById('reportContent');
+
+  // 清除之前的情绪类
+  modal.classList.remove('report-mega-win', 'report-win', 'report-meh', 'report-loss', 'report-disaster');
+
+  // 根据利润等级添加情绪化样式
+  if (r.netProfit > 1000000) {
+    modal.classList.add('report-mega-win');
+  } else if (r.netProfit > 300000) {
+    modal.classList.add('report-win');
+  } else if (r.netProfit > 0) {
+    modal.classList.add('report-meh');
+  } else if (r.netProfit > -300000) {
+    modal.classList.add('report-loss');
+  } else {
+    modal.classList.add('report-disaster');
+  }
+
+  // 更新连续盈利月数
+  if (r.netProfit > 0) {
+    STATE.consecutiveProfits++;
+  } else {
+    STATE.consecutiveProfits = 0;
+  }
+
+  const profitColor = r.netProfit >= 0 ? 'text-green-400 glow-green' : 'text-neon-red glow-red';
+  const profitLabel = r.netProfit >= 0 ? '+ ' + fmt(r.netProfit) : '- ' + fmt(Math.abs(r.netProfit));
+
+  // 动态生成财务总监点评
+  let quote = generateFinancialQuote(r);
+
+  let eventHTML = '';
+  if (r.hostEvent) {
+    eventHTML += `<div class="event-flash mb-2 p-3 rounded-lg border border-purple-500/50 bg-purple-500/5 text-sm font-medium text-center">${r.hostEvent}</div>`;
+  }
+  if (r.qualityEvent) {
+    eventHTML += `<div class="event-flash mb-2 p-3 rounded-lg border border-red-500/50 bg-red-500/5 text-sm font-medium text-center">${r.qualityEvent}</div>`;
+  }
+  if (r.brandMindDecline) {
+    eventHTML += `<div class="event-flash mb-2 p-3 rounded-lg border border-orange-500/50 bg-orange-500/5 text-sm font-medium text-center">📉 品牌心智下降！连续三月流量下滑,消费者信任度降低,转化率-0.5%</div>`;
+  }
+  if (r.event) {
+    const borderColor = r.event.includes('🎉') || r.event.includes('🔥') || r.event.includes('💰') || r.event.includes('🎬') || r.event.includes('🧧') || r.event.includes('🛍️') ? 'border-green-500/50 bg-green-500/5' : 'border-red-500/50 bg-red-500/5';
+    eventHTML += `<div class="event-flash mb-2 p-3 rounded-lg border ${borderColor} text-sm font-medium text-center">${r.event}</div>`;
+  }
+  if (eventHTML) eventHTML = `<div class="mb-4">${eventHTML}</div>`;
+
+  content.innerHTML = `
+    <div class="p-6">
+      <!-- Header -->
+      <div class="text-center mb-5">
+        <div class="text-[10px] text-gray-500 tracking-widest mb-1">MONTHLY FINANCIAL REPORT</div>
+        <div class="text-xl font-bold">第 ${r.month} 月 · 财务结算单</div>
+        <div class="text-xs text-gray-500 mt-1">${r.category} × ${r.host} × ${r.marketing}</div>
+      </div>
+
+      ${eventHTML}
+
+      <!-- Report Lines -->
+      <div class="space-y-0 border border-dark-border rounded-xl overflow-hidden">
+        <div class="report-line flex justify-between items-center px-4 py-3 bg-dark-surface/50 border-b border-dark-border" style="animation-delay:0.1s">
+          <span class="text-sm text-gray-400">📊 总流量</span>
+          <span class="text-sm font-bold text-neon-cyan">${fmtNum(r.totalTraffic)}</span>
+        </div>
+        <div class="report-line flex justify-between items-center px-4 py-3 border-b border-dark-border" style="animation-delay:0.2s">
+          <span class="text-sm text-gray-400">🎯 实际转化率</span>
+          <span class="text-sm font-bold">${(r.conversion * 100).toFixed(1)}%</span>
+        </div>
+        <div class="report-line flex justify-between items-center px-4 py-3 bg-dark-surface/50 border-b border-dark-border" style="animation-delay:0.3s">
+          <span class="text-sm text-gray-400">💰 总 GMV</span>
+          <span class="text-sm font-bold text-yellow-400">${fmt(r.totalGMV)}</span>
+        </div>
+        <div class="report-line flex justify-between items-center px-4 py-3 border-b border-dark-border" style="animation-delay:0.4s">
+          <span class="text-sm text-gray-400">📦 退货损失 (退货率 ${(r.returnRate * 100).toFixed(0)}%)</span>
+          <span class="text-sm font-bold text-red-400">- ${fmt(Math.round(r.totalGMV * r.returnRate))}</span>
+        </div>
+        <div class="report-line flex justify-between items-center px-4 py-3 bg-dark-surface/50 border-b border-dark-border" style="animation-delay:0.5s">
+          <span class="text-sm text-gray-400">✅ 真实销售额</span>
+          <span class="text-sm font-bold text-white">${fmt(r.realSales)}</span>
+        </div>
+
+        <div class="px-4 py-2 border-b border-dark-border">
+          <div class="text-[10px] text-gray-600 tracking-wider">— 成本明细 —</div>
+        </div>
+
+        <div class="report-line flex justify-between items-center px-4 py-3 bg-dark-surface/50 border-b border-dark-border" style="animation-delay:0.6s">
+          <span class="text-sm text-gray-400">📦 货品成本</span>
+          <span class="text-sm font-bold text-red-300">- ${fmt(r.goodsCost)}</span>
+        </div>
+        <div class="report-line flex justify-between items-center px-4 py-3 border-b border-dark-border" style="animation-delay:0.7s">
+          <span class="text-sm text-gray-400">🎙️ 主播成本</span>
+          <span class="text-sm font-bold text-red-300">- ${fmt(r.hostCost)}</span>
+        </div>
+        <div class="report-line flex justify-between items-center px-4 py-3 bg-dark-surface/50 border-b border-dark-border" style="animation-delay:0.8s">
+          <span class="text-sm text-gray-400">📢 营销成本</span>
+          <span class="text-sm font-bold text-red-300">- ${fmt(r.marketingCost)}</span>
+        </div>
+        ${r.companyFee > 0 ? `
+        <div class="report-line flex justify-between items-center px-4 py-3 border-b border-dark-border" style="animation-delay:0.82s">
+          <span class="text-sm text-gray-400">🏢 公司运营费</span>
+          <span class="text-sm font-bold text-red-300">- ${fmt(r.companyFee)}</span>
+        </div>` : ''}
+        ${r.regulatoryFine > 0 ? `
+        <div class="report-line flex justify-between items-center px-4 py-3 border-b border-dark-border" style="animation-delay:0.85s">
+          <span class="text-sm text-gray-400">⚖️ 监管罚款</span>
+          <span class="text-sm font-bold text-red-500">- ${fmt(r.regulatoryFine)}</span>
+        </div>` : ''}
+
+        <!-- NET PROFIT -->
+        <div class="report-line flex justify-between items-center px-4 py-4 border-b border-dark-border" style="animation-delay:0.9s">
+          <span class="text-base font-bold text-white">📈 本月净利润</span>
+          <span class="text-2xl font-black ${profitColor}">${profitLabel}</span>
+        </div>
+
+      </div>
+
+      <!-- Quote -->
+      <div class="mt-4 p-4 rounded-xl bg-dark-surface border border-dark-border">
+        <div class="text-[10px] text-gray-600 mb-1">📧 财务总监王姐</div>
+        <div class="text-sm text-gray-300 italic">"${quote}"</div>
+      </div>
+
+      <!-- Balance -->
+      <div class="mt-4 text-center">
+        <div class="text-[10px] text-gray-500">公司账户余额</div>
+        <div class="text-2xl font-black ${r.balance > 0 ? 'text-neon-cyan glow-cyan' : 'text-neon-red glow-red'}">${fmt(Math.round(r.balance))}</div>
+      </div>
+
+      <!-- Button -->
+      <button onclick="closeReport()" class="mt-5 w-full py-3 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-red text-black font-bold text-sm hover:opacity-90 transition-opacity">
+        ${r.balance <= 0 ? '💀 查看结局' : '👉 进入下个月'}
+      </button>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+
+  // Animate report lines
+  setTimeout(() => {
+    content.querySelectorAll('.report-line').forEach((line, i) => {
+      setTimeout(() => line.classList.add('show'), i * 100);
+    });
+  }, 100);
+}
+
+function closeReport() {
+  const modal = document.getElementById('reportModal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+
+  // 如果游戏已结束（破产或36个月），不再递增月份
+  if (STATE.gameOver) {
+    return;
+  }
+
+  if (STATE.balance <= 0) {
+    STATE.gameOver = true;
+    showGameOver();
+    return;
+  }
+
+  // Advance month
+  STATE.month++;
+  document.getElementById('currentMonth').textContent = STATE.month;
+
+  // 检查公司升级
+  checkCompanyUpgrade();
+
+  // Animate balance
+  animateNumber(document.getElementById('balanceDisplay'), Math.round(STATE.balance));
+
+  // Update other displays
+  document.getElementById('totalRevenue').textContent = fmt(Math.round(STATE.totalRevenue));
+  const tp = document.getElementById('totalProfit');
+  tp.textContent = fmt(Math.round(STATE.totalProfit));
+  tp.className = STATE.totalProfit >= 0 ? 'text-lg font-bold text-green-400' : 'text-lg font-bold text-neon-red';
+
+  // Balance change indicator
+  const lastRecord = STATE.history[STATE.history.length - 1];
+  const changeEl = document.getElementById('balanceChange');
+  changeEl.classList.remove('hidden');
+  if (lastRecord.netProfit >= 0) {
+    changeEl.textContent = '▲ ' + fmt(lastRecord.netProfit);
+    changeEl.className = 'text-sm font-medium text-green-400';
+  } else {
+    changeEl.textContent = '▼ ' + fmt(Math.abs(lastRecord.netProfit));
+    changeEl.className = 'text-sm font-medium text-neon-red';
+  }
+
+  // Update last month report
+  updateLastMonthReport(lastRecord);
+
+  // Update tips
+  updateTips();
+}
+
+function updateLastMonthReport(r) {
+  const el = document.getElementById('lastMonthReport');
+  const profitColor = r.netProfit >= 0 ? 'text-green-400' : 'text-red-400';
+  el.innerHTML = `
+    <div class="space-y-2 text-xs">
+      <div class="flex justify-between"><span class="text-gray-500">品类/主播</span><span>${r.category} × ${r.host}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">总流量</span><span class="text-neon-cyan">${fmtNum(r.totalTraffic)}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">GMV</span><span class="text-yellow-400">${fmt(r.totalGMV)}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">真实销售</span><span>${fmt(r.realSales)}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">总成本</span><span class="text-red-400">${fmt(r.goodsCost + r.hostCost + r.marketingCost + (r.regulatoryFine || 0))}</span></div>
+      <div class="h-px bg-dark-border my-1"></div>
+      <div class="flex justify-between font-bold"><span>净利润</span><span class="${profitColor}">${r.netProfit >= 0 ? '+' : ''}${fmt(r.netProfit)}</span></div>
+    </div>
+  `;
+}
+
+function updateTips() {
+  const tips = document.getElementById('tips');
+  const last = STATE.history[STATE.history.length - 1];
+  const msgs = [];
+  if (last.returnRate >= 0.5) msgs.push('退货率太高了！考虑换个品类或者降低营销预期。');
+  if (last.netProfit < 0 && STATE.adBudget > 200000) msgs.push('投流烧钱太猛，试试减少投流配合KOC种草。');
+  if (last.netProfit > 0 && last.netProfit < 50000) msgs.push('利润太薄，考虑提升转化率或者选高毛利品类。');
+  if (STATE.balance < 300000) msgs.push('⚠️ 资金告急！下个月务必控制成本！');
+  if (STATE.balance > 2000000) msgs.push('资金充裕，可以考虑激进一点的策略。');
+  if (msgs.length === 0) msgs.push('保持节奏，稳中求胜！');
+  tips.innerHTML = msgs.map(m => `<p class="mb-1">• ${m}</p>`).join('');
+}
+
+// ============================================================
+// ENDORSER OFFER
+// ============================================================
+let currentEndorserOffer = null;
+
+function showEndorserOffer(level, cost, months, trafficBonus, conversionBonus) {
+  currentEndorserOffer = { level, cost, months, trafficBonus, conversionBonus };
+
+  const levelNames = {
+    'short': '短期代言人',
+    'star': '当红代言人',
+    'top': '顶流代言人'
+  };
+  const levelEmojis = {
+    'short': '⭐',
+    'star': '🌟',
+    'top': '💎'
+  };
+
+  const modal = document.getElementById('endorserModal');
+  const content = modal.querySelector('.bg-dark-card');
+
+  content.innerHTML = `
+    <div class="text-center mb-6">
+      <div class="text-6xl mb-3">${levelEmojis[level]}</div>
+      <div class="text-2xl font-bold mb-2">${levelNames[level]}签约机会</div>
+      <div class="text-sm text-gray-400">累计利润已达 ${fmt(Math.round(STATE.totalProfit))}，可签约更高级别代言人</div>
+    </div>
+
+    <div class="space-y-3 mb-6 text-sm">
+      <div class="flex justify-between p-3 bg-dark-surface rounded-lg">
+        <span class="text-gray-400">💰 签约费用</span>
+        <span class="text-neon-red font-bold">${fmt(cost)}</span>
+      </div>
+      <div class="flex justify-between p-3 bg-dark-surface rounded-lg">
+        <span class="text-gray-400">📅 合约期限</span>
+        <span class="text-white font-bold">${months} 个月</span>
+      </div>
+      <div class="flex justify-between p-3 bg-dark-surface rounded-lg">
+        <span class="text-gray-400">📈 流量加成</span>
+        <span class="text-green-400 font-bold">+${(trafficBonus * 100).toFixed(0)}%</span>
+      </div>
+      <div class="flex justify-between p-3 bg-dark-surface rounded-lg">
+        <span class="text-gray-400">🎯 转化率加成</span>
+        <span class="text-green-400 font-bold">+${(conversionBonus * 100).toFixed(1)}%</span>
+      </div>
+    </div>
+
+    <div class="flex gap-3">
+      <button onclick="acceptEndorser()" class="flex-1 bg-gradient-to-r from-neon-cyan to-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-neon-cyan/30 transition-all">
+        💰 签约
+      </button>
+      <button onclick="declineEndorser()" class="flex-1 bg-dark-surface text-gray-400 font-bold py-3 px-6 rounded-lg hover:bg-dark-border transition-all">
+        ❌ 拒绝
+      </button>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function acceptEndorser() {
+  if (!currentEndorserOffer) return;
+
+  const { level, cost, months, trafficBonus, conversionBonus } = currentEndorserOffer;
+
+  if (STATE.balance < cost) {
+    alert(`资金不足！需要${fmt(cost)}签约费。`);
+    return;
+  }
+
+  STATE.balance -= cost;
+  STATE.endorserLevel = level;
+  STATE.endorserMonthsLeft = months;
+  STATE.endorserTrafficBonus = trafficBonus;
+  STATE.endorserConversionBonus = conversionBonus;
+
+  const levelNames = {
+    'short': '短期代言人',
+    'star': '当红代言人',
+    'top': '顶流代言人'
+  };
+
+  STATE.bigEvents.push({
+    month: STATE.month,
+    event: `🌟 签约${levelNames[level]}！未来${months}个月流量+${(trafficBonus*100).toFixed(0)}%、转化率+${(conversionBonus*100).toFixed(1)}%`
+  });
+
+  animateNumber(document.getElementById('balanceDisplay'), Math.round(STATE.balance));
+  document.getElementById('endorserModal').classList.add('hidden');
+  document.getElementById('endorserModal').classList.remove('flex');
+  alert(`🌟 签约成功！未来${months}个月每月流量+${(trafficBonus*100).toFixed(0)}%、转化率+${(conversionBonus*100).toFixed(1)}%！`);
+
+  currentEndorserOffer = null;
+}
+
+function declineEndorser() {
+  document.getElementById('endorserModal').classList.add('hidden');
+  document.getElementById('endorserModal').classList.remove('flex');
+  currentEndorserOffer = null;
+}
+
+// ============================================================
+// CEO LIVE
+// ============================================================
+function acceptCeoLive() {
+  document.getElementById('ceoLiveModal').classList.add('hidden');
+  document.getElementById('ceoLiveModal').classList.remove('flex');
+  STATE.selectedHost = 'ceo';
+  selectHost('ceo');
+  showToast('🔥 总裁亲自下场！流量爆炸！');
+}
+
+function declineCeoLive() {
+  document.getElementById('ceoLiveModal').classList.add('hidden');
+  document.getElementById('ceoLiveModal').classList.remove('flex');
+  STATE.gameOver = true;
+  setTimeout(() => {
+    const modal = document.getElementById('gameOverModal');
+    // 修改标题和emoji
+    modal.querySelector('.text-6xl').textContent = '😭';
+    modal.querySelector('.gameover-text').textContent = '破产倒闭';
+    modal.querySelector('.text-lg.text-gray-300').textContent = '老板不愿亲自下场，公司宣告破产';
+
+    // 显示统计数据
+    document.getElementById('gameOverStats').innerHTML = `
+      存活了 <span class="text-neon-cyan font-bold">${STATE.month}</span> 个月 ·
+      累计营收 <span class="text-yellow-400 font-bold">${fmt(Math.round(STATE.totalRevenue))}</span> ·
+      累计利润 <span class="${STATE.totalProfit >= 0 ? 'text-green-400' : 'text-neon-red'} font-bold">${fmt(Math.round(STATE.totalProfit))}</span>
+    `;
+
+    // 显示张一鸣的话
+    document.getElementById('gameOverQuote').innerHTML = `
+      <div class="bg-neon-red/10 border border-neon-red/30 rounded-lg p-4 not-italic">
+        <div class="text-4xl mb-2">💰</div>
+        <div class="text-base font-bold text-white mb-1">张一鸣：</div>
+        <div class="text-sm text-gray-300">"充钱就会变强，不充钱你拿什么跟别人拼？"</div>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }, 300);
+}
+
+// ============================================================
+// FINAL REVIEW (36个月结束)
+// ============================================================
+// ============================================================
+// COMPANY UPGRADE & SKILLS
+// ============================================================
+function checkCompanyUpgrade() {
+  const tiers = ['garage', 'startup', 'midsize', 'enterprise'];
+  const currentIndex = tiers.indexOf(STATE.companyTier);
+
+  // 检查升级
+  for (let i = currentIndex + 1; i < tiers.length; i++) {
+    const tier = tiers[i];
+    const tierData = COMPANY_TIERS[tier];
+    if (STATE.totalProfit >= tierData.unlockProfit) {
+      const prevTier = COMPANY_TIERS[STATE.companyTier];
+      STATE.companyTier = tier;
+      document.getElementById('companyTier').textContent = `· ${tierData.name}`;
+      showToast(`🎉 升级为${tierData.name}`);
+      STATE.bigEvents.push({ month: STATE.month, event: `升级为${tierData.name}` });
+      return;
+    }
+  }
+
+  // 检查降级
+  for (let i = currentIndex - 1; i >= 0; i--) {
+    const tier = tiers[i];
+    const tierData = COMPANY_TIERS[tier];
+    const nextTierData = COMPANY_TIERS[tiers[i + 1]];
+    if (STATE.totalProfit < nextTierData.unlockProfit) {
+      const prevTier = COMPANY_TIERS[STATE.companyTier];
+      STATE.companyTier = tier;
+      document.getElementById('companyTier').textContent = `· ${tierData.name}`;
+      showToast(`⚠️ 降级为${tierData.name}`);
+      STATE.bigEvents.push({ month: STATE.month, event: `降级为${tierData.name}` });
+      return;
+    }
+  }
+}
+
+function unlockSkill(skillId) {
+  const skill = SKILLS[skillId];
+  if (STATE.balance < skill.cost) {
+    showToast('资金不足！');
+    return;
+  }
+  if (STATE.unlockedSkills.includes(skillId)) {
+    showToast('已解锁此技能！');
+    return;
+  }
+  STATE.balance -= skill.cost;
+  STATE.totalProfit -= skill.cost;
+  STATE.unlockedSkills.push(skillId);
+  showToast(`✨ 技能已解锁：${skill.name}`);
+  STATE.bigEvents.push({ month: STATE.month, event: `解锁技能：${skill.name}` });
+  document.getElementById('balanceDisplay').textContent = fmt(Math.round(STATE.balance));
+  showSkillPanel();
+}
+
+function showSkillPanel() {
+  const modal = document.getElementById('skillModal');
+  const content = document.getElementById('skillContent');
+  let html = '';
+  for (let id in SKILLS) {
+    const skill = SKILLS[id];
+    const unlocked = STATE.unlockedSkills.includes(id);
+    const canAfford = STATE.balance >= skill.cost;
+    html += `
+      <div class="bg-dark-surface border ${unlocked ? 'border-green-500' : 'border-dark-border'} rounded-lg p-4">
+        <div class="flex justify-between items-start mb-2">
+          <div class="font-bold">${unlocked ? '✅' : '🔒'} ${skill.name}</div>
+          <div class="text-sm ${canAfford ? 'text-yellow-400' : 'text-gray-500'}">${fmt(skill.cost)}</div>
+        </div>
+        <div class="text-xs text-gray-400 mb-3">${getSkillDesc(id)}</div>
+        ${!unlocked ? `<button onclick="unlockSkill('${id}')" class="w-full py-2 ${canAfford ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-700 cursor-not-allowed'} text-white text-sm rounded" ${!canAfford ? 'disabled' : ''}>解锁</button>` : '<div class="text-green-400 text-sm text-center">已解锁</div>'}
+      </div>`;
+  }
+  content.innerHTML = html;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function closeSkillPanel() {
+  document.getElementById('skillModal').classList.add('hidden');
+  document.getElementById('skillModal').classList.remove('flex');
+}
+
+function getSkillDesc(id) {
+  const descs = {
+    hostTraining: '成熟主播转化率 +1%',
+    brandBuilding: '所有品类流量 +15%',
+    fanOps: '转化率 +2%',
+    warehouse: '退货率 -3%',
+    qualityControl: '监管罚款概率 -40%',
+    logistics: '货品成本 -8%'
+  };
+  return descs[id] || '';
+}
+
+// ============================================================
+// FINAL REVIEW
+// ============================================================
+function showFinalReview() {
+  STATE.gameOver = true;
+  const modal = document.getElementById('finalReviewModal');
+
+  // 生成经营策略分析
+  const categoryStats = {};
+  const hostStats = {};
+  STATE.history.forEach(r => {
+    categoryStats[r.category] = (categoryStats[r.category] || 0) + 1;
+    hostStats[r.host] = (hostStats[r.host] || 0) + 1;
+  });
+
+  const mostCategory = Object.keys(categoryStats).reduce((a, b) => categoryStats[a] > categoryStats[b] ? a : b);
+  const mostHost = Object.keys(hostStats).reduce((a, b) => hostStats[a] > hostStats[b] ? a : b);
+
+  const avgProfit = STATE.totalProfit / 36;
+  const profitableMonths = STATE.history.filter(r => r.netProfit > 0).length;
+
+  let strategyAnalysis = '';
+  if (avgProfit > 500000) {
+    strategyAnalysis = '🏆 您是真正的带货大亨！稳健的策略和精准的决策让您在竞争激烈的直播带货市场中脱颖而出。';
+  } else if (avgProfit > 100000) {
+    strategyAnalysis = '👍 不错的经营成绩！您展现了良好的商业嗅觉，虽然偶有波折，但总体保持盈利。';
+  } else if (avgProfit > 0) {
+    strategyAnalysis = '💪 艰难但坚持！在这个充满挑战的行业中，您成功存活了36个月，这本身就是一种胜利。';
+  } else {
+    strategyAnalysis = '😅 虽然亏损了，但您获得了宝贵的经验。失败是成功之母，下次一定能做得更好！';
+  }
+
+  // 生成大事件回顾
+  let eventsHTML = '';
+  if (STATE.bigEvents.length > 0) {
+    eventsHTML = STATE.bigEvents.map(e =>
+      `<div class="p-3 bg-dark-surface rounded-lg text-sm">
+        <span class="text-neon-cyan font-bold">第${e.month}月</span> · ${e.event}
+      </div>`
+    ).join('');
+  } else {
+    eventsHTML = '<div class="text-gray-500 text-sm text-center py-4">没有重大事件记录</div>';
+  }
+
+  document.getElementById('finalReviewContent').innerHTML = `
+    <div class="p-6 max-h-[70vh] overflow-y-auto">
+      <!-- 标题 -->
+      <div class="text-center mb-6">
+        <div class="text-6xl mb-3">🎊</div>
+        <div class="text-3xl font-bold mb-2">36个月经营复盘</div>
+        <div class="text-sm text-gray-400">恭喜您完成了完整的创业周期！</div>
+      </div>
+
+      <!-- 核心数据 -->
+      <div class="grid grid-cols-3 gap-3 mb-6">
+        <div class="bg-dark-surface p-4 rounded-lg text-center">
+          <div class="text-2xl font-bold text-neon-cyan">${STATE.month}</div>
+          <div class="text-xs text-gray-400 mt-1">经营月数</div>
+        </div>
+        <div class="bg-dark-surface p-4 rounded-lg text-center">
+          <div class="text-2xl font-bold text-yellow-400">${fmt(Math.round(STATE.totalRevenue))}</div>
+          <div class="text-xs text-gray-400 mt-1">累计营收</div>
+        </div>
+        <div class="bg-dark-surface p-4 rounded-lg text-center">
+          <div class="text-2xl font-bold ${STATE.totalProfit >= 0 ? 'text-green-400' : 'text-neon-red'}">${fmt(Math.round(STATE.totalProfit))}</div>
+          <div class="text-xs text-gray-400 mt-1">累计利润</div>
+        </div>
+      </div>
+
+      <!-- 策略分析 -->
+      <div class="mb-6">
+        <div class="text-lg font-bold mb-3 flex items-center gap-2">
+          <span>📊</span>
+          <span>经营策略分析</span>
+        </div>
+        <div class="bg-gradient-to-r from-neon-cyan/10 to-neon-red/10 border border-neon-cyan/30 rounded-lg p-4 mb-3">
+          <p class="text-sm leading-relaxed">${strategyAnalysis}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="bg-dark-surface p-3 rounded-lg">
+            <div class="text-gray-400 mb-1">最常选择品类</div>
+            <div class="font-bold text-white">${mostCategory}</div>
+          </div>
+          <div class="bg-dark-surface p-3 rounded-lg">
+            <div class="text-gray-400 mb-1">最常合作主播</div>
+            <div class="font-bold text-white">${mostHost}</div>
+          </div>
+          <div class="bg-dark-surface p-3 rounded-lg">
+            <div class="text-gray-400 mb-1">盈利月数</div>
+            <div class="font-bold text-green-400">${profitableMonths} / 36</div>
+          </div>
+          <div class="bg-dark-surface p-3 rounded-lg">
+            <div class="text-gray-400 mb-1">月均利润</div>
+            <div class="font-bold ${avgProfit >= 0 ? 'text-green-400' : 'text-neon-red'}">${fmt(Math.round(avgProfit))}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 大事件回顾 -->
+      <div class="mb-6">
+        <div class="text-lg font-bold mb-3 flex items-center gap-2">
+          <span>🎯</span>
+          <span>重大事件回顾</span>
+        </div>
+        <div class="space-y-2 max-h-48 overflow-y-auto">
+          ${eventsHTML}
+        </div>
+      </div>
+
+      <!-- 愿望输入 -->
+      <div class="mb-4">
+        <div class="text-lg font-bold mb-3 flex items-center gap-2">
+          <span>💭</span>
+          <span>写下你的愿望</span>
+        </div>
+        <div class="text-sm text-gray-400 mb-3">
+          经过36个月的奋斗，账上有 <span class="text-neon-cyan font-bold">${fmt(Math.round(STATE.balance))}</span> 的资金。<br>
+          你想用这笔钱实现什么愿望？
+        </div>
+        <textarea id="wishInput"
+          class="w-full bg-dark-surface border border-dark-border rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:border-neon-cyan transition-colors"
+          rows="3"
+          placeholder="例如：买一辆特斯拉、环游世界、投资下一个项目..."></textarea>
+      </div>
+
+      <!-- 按钮 -->
+      <div class="flex gap-3">
+        <button onclick="saveFinalWish()" class="flex-1 bg-gradient-to-r from-neon-cyan to-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-neon-cyan/30 transition-all">
+          💾 保存愿望
+        </button>
+        <button onclick="restartGame()" class="flex-1 bg-dark-surface text-gray-400 font-bold py-3 px-6 rounded-lg hover:bg-dark-border transition-all">
+          🔄 重新创业
+        </button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function saveFinalWish() {
+  const wish = document.getElementById('wishInput').value.trim();
+  if (!wish) {
+    alert('请写下你的愿望！');
+    return;
+  }
+
+  STATE.finalWish = wish;
+
+  // 存档本次游戏结果
+  const archive = {
+    companyName: STATE.companyName,
+    completedAt: new Date().toLocaleString('zh-CN'),
+    totalRevenue: STATE.totalRevenue,
+    totalProfit: STATE.totalProfit,
+    finalBalance: STATE.balance,
+    months: STATE.month,
+    wish: wish,
+    bigEvents: [...STATE.bigEvents]
+  };
+  STATE.archives.push(archive);
+
+  // 显示保存成功提示
+  alert(`✨ 愿望已保存！\n\n"${wish}"\n\n这是你的第 ${STATE.archives.length} 次创业经历。\n点击"重新创业"开启新的征程！`);
+}
+
+// ============================================================
+// GAME OVER
+// ============================================================
+function showGameOver() {
+  const modal = document.getElementById('gameOverModal');
+  document.getElementById('gameOverStats').innerHTML = `
+    存活了 <span class="text-neon-cyan font-bold">${STATE.month}</span> 个月 ·
+    累计营收 <span class="text-yellow-400 font-bold">${fmt(Math.round(STATE.totalRevenue))}</span>
+  `;
+  document.getElementById('gameOverQuote').textContent = '"' + pick(GAMEOVER_QUOTES) + '"';
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function restartGame() {
+  // 立即重置游戏状态，防止任何残留
+  STATE.gameOver = false;
+  STATE.month = 1;
+
+  // 弹出输入新公司名对话框
+  const newCompanyName = prompt('🚀 开启新的创业征程！\n\n请输入你的新公司名称：', '未来科技MCN');
+
+  if (!newCompanyName || !newCompanyName.trim()) {
+    return; // 用户取消或未输入
+  }
+
+  // 确保月份显示为1
+  document.getElementById('currentMonth').textContent = '1';
+
+  STATE.companyName = newCompanyName.trim();
+  STATE.balance = 1000000;
+  STATE.totalRevenue = 0;
+  STATE.totalProfit = 0;
+  STATE.selectedCategory = null;
+  STATE.selectedHost = null;
+  STATE.adBudget = 0;
+  STATE.selectedMarketing = 'none';
+  STATE.categoryMargin = 0.75;
+  STATE.history = [];
+  STATE.trafficHistory = [];
+  STATE.hostHistory = [];
+  STATE.categoryHistory = [];
+  STATE.endorserLevel = null;
+  STATE.endorserMonthsLeft = 0;
+  STATE.endorserTrafficBonus = 0;
+  STATE.endorserConversionBonus = 0;
+  STATE.bigEvents = [];
+  STATE.finalWish = '';
+  STATE.gameOver = false;
+  STATE.companyTier = 'garage';
+  STATE.unlockedSkills = [];
+  STATE.achievements = [];
+  STATE.consecutiveProfits = 0;
+
+  document.getElementById('gameOverModal').classList.add('hidden');
+  document.getElementById('gameOverModal').classList.remove('flex');
+  document.getElementById('finalReviewModal').classList.add('hidden');
+  document.getElementById('finalReviewModal').classList.remove('flex');
+
+  document.getElementById('companyName').textContent = STATE.companyName;
+  document.getElementById('companyTier').textContent = '· 车库工作室';
+  document.getElementById('currentMonth').textContent = '1';
+  document.getElementById('balanceDisplay').textContent = '¥1,000,000';
+  document.getElementById('balanceDisplay').dataset.value = '1000000';
+  document.getElementById('totalRevenue').textContent = '¥0';
+  document.getElementById('totalProfit').textContent = '¥0';
+  document.getElementById('totalProfit').className = 'text-lg font-bold';
+  document.getElementById('balanceChange').classList.add('hidden');
+
+  document.querySelectorAll('.card-selectable').forEach(c => c.classList.remove('selected'));
+  document.querySelector('[data-marketing="none"]').classList.add('selected');
+
+  // Reset margin section
+  document.getElementById('marginSection').classList.add('hidden');
+  document.getElementById('marginSlider').value = 75;
+  document.getElementById('marginDisplay').textContent = '75%';
+  document.getElementById('returnDisplay').textContent = '15%';
+  document.getElementById('riskDisplay').textContent = '🟢 低';
+  document.getElementById('riskDisplay').className = 'text-lg font-bold text-green-400';
+
+  document.getElementById('adBudgetSlider').value = 0;
+  document.getElementById('adBudgetDisplay').textContent = '¥0';
+  document.getElementById('adTrafficDisplay').textContent = '0';
+
+  document.getElementById('lastMonthReport').innerHTML = `
+    <div class="text-center py-6">
+      <div class="text-2xl mb-2">📋</div>
+      <div class="text-xs">尚无数据，开始第一个月吧！</div>
+    </div>
+  `;
+
+  document.getElementById('tips').innerHTML = `
+    <p>重新出发！这次一定能行！</p>
+    <p class="mt-2">记住上次的教训，合理控制成本。</p>
+  `;
+
+  updateEstimates();
+}
+
+// ==================== 存档功能 ====================
+function saveGame() {
+  try {
+    const saveData = {
+      version: '1.0',
+      timestamp: new Date().toISOString(),
+      state: STATE
+    };
+    localStorage.setItem('tiktok_game_save', JSON.stringify(saveData));
+    showToast('success', '💾 游戏已保存！');
+  } catch (e) {
+    showToast('error', '❌ 保存失败：' + e.message);
+  }
+}
+
+function loadGame() {
+  try {
+    const saved = localStorage.getItem('tiktok_game_save');
+    if (!saved) {
+      showToast('warning', '⚠️ 没有找到存档');
+      return;
+    }
+
+    const saveData = JSON.parse(saved);
+    const saveDate = new Date(saveData.timestamp).toLocaleString('zh-CN');
+
+    if (!confirm(`📂 找到存档\n\n保存时间：${saveDate}\n公司：${saveData.state.companyName}\n月份：第${saveData.state.month}月\n余额：¥${fmtNum(saveData.state.balance)}\n\n确定要加载这个存档吗？`)) {
+      return;
+    }
+
+    Object.assign(STATE, saveData.state);
+
+    // 更新界面
+    document.getElementById('companyName').textContent = STATE.companyName;
+    document.getElementById('currentMonth').textContent = STATE.month;
+    document.getElementById('balanceDisplay').textContent = fmt(STATE.balance);
+    document.getElementById('totalRevenue').textContent = fmt(STATE.totalRevenue);
+    document.getElementById('totalProfit').textContent = fmt(STATE.totalProfit);
+
+    updateEstimates();
+    showToast('success', '✅ 存档加载成功！');
+  } catch (e) {
+    showToast('error', '❌ 加载失败：' + e.message);
+  }
+}
+
+// 保存经营结果档案（36个月结束时自动调用）
+function saveGameArchive() {
+  try {
+    const archives = JSON.parse(localStorage.getItem('tiktok_game_archives') || '[]');
+    const archive = {
+      id: Date.now(),
+      timestamp: new Date().toISOString(),
+      companyName: STATE.companyName,
+      finalBalance: STATE.balance,
+      totalRevenue: STATE.totalRevenue,
+      totalProfit: STATE.totalProfit,
+      finalWish: STATE.finalWish,
+      history: STATE.history
+    };
+    archives.unshift(archive);
+    if (archives.length > 10) archives.pop(); // 最多保存10个档案
+    localStorage.setItem('tiktok_game_archives', JSON.stringify(archives));
+    showToast('success', '📜 经营结果已自动保存到档案');
+  } catch (e) {
+    console.error('保存档案失败:', e);
+  }
+}
+
+// ============================================================
+// HISTORY
+// ============================================================
+function showHistory() {
+  switchHistoryTab('monthly');
+  const modal = document.getElementById('historyModal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function switchHistoryTab(tab) {
+  const content = document.getElementById('historyContent');
+  const tabMonthly = document.getElementById('tabMonthly');
+  const tabArchive = document.getElementById('tabArchive');
+
+  if (tab === 'monthly') {
+    tabMonthly.className = 'px-4 py-2 text-sm font-medium border-b-2 border-neon-cyan text-neon-cyan';
+    tabArchive.className = 'px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-white';
+
+    if (STATE.history.length === 0) {
+      content.innerHTML = '<div class="text-center py-8 text-gray-500 text-sm">还没有历史记录</div>';
+    } else {
+      content.innerHTML = STATE.history.map(r => {
+        const pc = r.netProfit >= 0 ? 'text-green-400' : 'text-red-400';
+        return `
+          <div class="p-3 rounded-lg bg-dark-surface mb-2 text-xs">
+            <div class="flex justify-between items-center mb-1">
+              <span class="font-bold">第 ${r.month} 月</span>
+              <span class="font-bold ${pc}">${r.netProfit >= 0 ? '+' : ''}${fmt(r.netProfit)}</span>
+            </div>
+            <div class="text-gray-500">${r.category} × ${r.host} | 流量 ${fmtNum(r.totalTraffic)} | GMV ${fmt(r.totalGMV)}</div>
+            ${r.beautyQualityEvent ? `<div class="text-[10px] mt-1 text-red-500">${r.beautyQualityEvent}</div>` : ''}
+            ${r.event ? `<div class="text-[10px] mt-1 ${r.event.type === 'good' ? 'text-green-500' : 'text-red-500'}">${r.event.text}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+  } else {
+    tabMonthly.className = 'px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-white';
+    tabArchive.className = 'px-4 py-2 text-sm font-medium border-b-2 border-neon-cyan text-neon-cyan';
+
+    const archives = JSON.parse(localStorage.getItem('tiktok_game_archives') || '[]');
+    if (archives.length === 0) {
+      content.innerHTML = '<div class="text-center py-8 text-gray-500 text-sm">还没有完成36个月的经营档案</div>';
+    } else {
+      content.innerHTML = archives.map(a => {
+        const date = new Date(a.timestamp).toLocaleString('zh-CN');
+        const pc = a.totalProfit >= 0 ? 'text-green-400' : 'text-red-400';
+        return `
+          <div class="p-4 rounded-lg bg-dark-surface mb-3 text-xs border border-dark-border">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-bold text-sm">${a.companyName}</span>
+              <span class="text-[10px] text-gray-500">${date}</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mb-2">
+              <div><span class="text-gray-500">最终余额：</span><span class="font-medium">${fmt(a.finalBalance)}</span></div>
+              <div><span class="text-gray-500">总营收：</span><span class="font-medium">${fmt(a.totalRevenue)}</span></div>
+            </div>
+            <div class="mb-2"><span class="text-gray-500">总利润：</span><span class="font-bold ${pc}">${fmt(a.totalProfit)}</span></div>
+            ${a.finalWish ? `<div class="text-[10px] text-gray-400 italic mt-2">"${a.finalWish}"</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+  }
+}
+
+function closeHistory(e) {
+  if (e.target === e.currentTarget) {
+    document.getElementById('historyModal').classList.add('hidden');
+    document.getElementById('historyModal').classList.remove('flex');
+  }
+}
+
+// ============================================================
+// COMPANY NAME
+// ============================================================
+function editCompanyName() {
+  const modal = document.getElementById('nameModal');
+  document.getElementById('nameInput').value = STATE.companyName;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.getElementById('nameInput').focus();
+}
+
+function closeNameModal(e) {
+  if (e.target === e.currentTarget) {
+    document.getElementById('nameModal').classList.add('hidden');
+    document.getElementById('nameModal').classList.remove('flex');
+  }
+}
+
+function randomName() {
+  document.getElementById('nameInput').value = pick(COMPANY_NAMES);
+}
+
+function confirmName() {
+  const val = document.getElementById('nameInput').value.trim();
+  if (val) {
+    STATE.companyName = val;
+    document.getElementById('companyName').textContent = val;
+  }
+  document.getElementById('nameModal').classList.add('hidden');
+  document.getElementById('nameModal').classList.remove('flex');
+}
+
+document.getElementById('nameInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') confirmName();
+});
+
+// ============================================================
+// TOAST & SHAKE
+// ============================================================
+function showToast(msg) {
+  const toast = document.createElement('div');
+  toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 z-[60] px-6 py-3 bg-neon-red/90 text-white text-sm font-medium rounded-xl shadow-lg';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.transition = 'opacity 0.3s';
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 2000);
+}
+
+function shake(id) {
+  const el = document.getElementById(id);
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = 'shake 0.5s ease-in-out';
+  showToast('请先完成这一步的选择！');
+}
+
+// Add shake keyframe
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }`;
+document.head.appendChild(shakeStyle);
+
+// ============================================================
+// INIT
+// ============================================================
+updateEstimates();
+</script>
+</body>
+</html>

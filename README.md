@@ -6,7 +6,7 @@
 
 ## 🎮 Play Now
 
-**[👉 Play the Game](https://github.com/melissa59923-web/tiktok-game))
+[👉 Play the Game](https://melissa59923-web.github.io/tiktok-game/game.html)))
 ## ✨ What Makes It Fun
 
 - **Real Business Decisions**: Pick from beauty, fashion, electronics, or food. Each choice matters.
